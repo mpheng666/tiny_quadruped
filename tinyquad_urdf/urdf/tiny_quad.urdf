@@ -2,8 +2,15 @@
 <!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+
+
+<!-- TODO: Align each leg's joints at y plane for kinematics calculation -->
 <robot
   name="tiny_quad">
+  <link name="base_footprint" >
+    <origin xyz="0.0103120639734149 3.57028601323102E-12 -5.09987831894361E-06" rpy="0 0 0"/>
+  </link>
   <link
     name="base_link">
     <inertial>
@@ -44,6 +51,12 @@
       </geometry>
     </collision>
   </link>
+  <joint name="base_joint" type="fixed" >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+  
   <link
     name="LFS_L">
     <inertial>
@@ -97,7 +110,7 @@
     <axis
       xyz="1 0 0" />
     <limit
-      lower="-1.5708"
+      lower="0"
       upper="1.5708"
       effort="1.0787315"
       velocity="7.48" />
@@ -106,7 +119,7 @@
     name="LFU_L">
     <inertial>
       <origin
-        xyz="0.00956780740114901 -0.00266058761660331 -0.0619406808382107"
+        xyz="0.00956780740114901 -0.00266058763780398 -0.0619406808382107"
         rpy="0 0 0" />
       <mass
         value="0.0633248586799827" />
@@ -120,7 +133,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -134,7 +147,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -142,11 +155,12 @@
       </geometry>
     </collision>
   </link>
+
   <joint
     name="LFU_J"
     type="revolute">
     <origin
-      xyz="-0.037107 0.01375 0"
+      xyz="-0.037107 0 0"
       rpy="0 0 0" />
     <parent
       link="LFS_L" />
@@ -155,15 +169,16 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="0"
+      lower="-1"
       upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
+
   <link
     name="LFL_L">
     <inertial>
@@ -180,9 +195,9 @@
         iyz="1.66567501013991E-06"
         izz="2.20436639521685E-05" />
     </inertial>
-    <visual>
+    <!-- <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -196,19 +211,19 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="package://tiny_quad/meshes/LFL_L.STL" />
       </geometry>
-    </collision>
+    </collision> -->
   </link>
   <joint
     name="LFL_J"
     type="revolute">
     <origin
-      xyz="0 0.01675 -0.078388"
+      xyz="0 0 -0.078388"
       rpy="0 0 0" />
     <parent
       link="LFU_L" />
@@ -217,14 +232,14 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      lower="-1.1"
+      upper="1.5708"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="LFC_L">
@@ -244,7 +259,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -258,7 +273,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -270,7 +285,7 @@
     name="LFC_J"
     type="fixed">
     <origin
-      xyz="2.0629E-05 0.012 -0.085"
+      xyz="2.0629E-05 0 -0.085"
       rpy="0 0 0" />
     <parent
       link="LFL_L" />
@@ -279,6 +294,9 @@
     <axis
       xyz="0 0 0" />
   </joint>
+
+
+  
   <link
     name="RFS_L">
     <inertial>
@@ -332,14 +350,14 @@
     <axis
       xyz="1 0 0" />
     <limit
-      lower="0"
+      lower="-1.5708"
       upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="RFU_L">
@@ -359,7 +377,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -373,7 +391,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -385,7 +403,7 @@
     name="RFU_J"
     type="revolute">
     <origin
-      xyz="-0.037107 -0.01375 0"
+      xyz="-0.037107 0 0"
       rpy="0 0 0" />
     <parent
       link="RFS_L" />
@@ -395,13 +413,13 @@
       xyz="0 1 0" />
     <limit
       lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      upper="1.1"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="RFL_L">
@@ -419,9 +437,9 @@
         iyz="-1.66560968972201E-06"
         izz="2.20437476815741E-05" />
     </inertial>
-    <visual>
+    <!-- <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -435,19 +453,19 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="package://tiny_quad/meshes/RFL_L.STL" />
       </geometry>
-    </collision>
+    </collision> -->
   </link>
   <joint
     name="RFL_J"
     type="revolute">
     <origin
-      xyz="0 -0.01675 -0.078391"
+      xyz="0 0 -0.078391"
       rpy="0 0 0" />
     <parent
       link="RFU_L" />
@@ -456,14 +474,14 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      lower="-1.1"
+      upper="1.5708"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="RFC_L">
@@ -483,7 +501,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -497,7 +515,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -509,7 +527,7 @@
     name="RFC_J"
     type="fixed">
     <origin
-      xyz="1.9364E-05 -0.012 -0.085"
+      xyz="1.9364E-05 0 -0.085"
       rpy="0 0 0" />
     <parent
       link="RFL_L" />
@@ -572,13 +590,13 @@
       xyz="1 0 0" />
     <limit
       lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      upper="1.5708"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="LBU_L">
@@ -598,7 +616,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -612,7 +630,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -624,7 +642,7 @@
     name="LBU_J"
     type="revolute">
     <origin
-      xyz="-0.037107 0.01375 0"
+      xyz="-0.037107 0 0"
       rpy="0 0 0" />
     <parent
       link="LBS_L" />
@@ -634,13 +652,13 @@
       xyz="0 1 0" />
     <limit
       lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      upper="1"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="LBL_L">
@@ -658,9 +676,9 @@
         iyz="1.66567501013991E-06"
         izz="2.20436639521686E-05" />
     </inertial>
-    <visual>
+    <!-- <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -674,19 +692,19 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="package://tiny_quad/meshes/LBL_L.STL" />
       </geometry>
-    </collision>
+    </collision> -->
   </link>
   <joint
     name="LBL_J"
     type="revolute">
     <origin
-      xyz="0 0.01675 -0.078388"
+      xyz="0 0 -0.078388"
       rpy="0 0 0" />
     <parent
       link="LBU_L" />
@@ -695,14 +713,14 @@
     <axis
       xyz="0 1 0" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      lower="-1.5708"
+      upper="1.1"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="LBC_L">
@@ -722,7 +740,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -736,7 +754,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -748,7 +766,7 @@
     name="LBC_J"
     type="fixed">
     <origin
-      xyz="2.0629E-05 0.012 -0.085"
+      xyz="2.0629E-05 0 -0.085"
       rpy="0 0 0" />
     <parent
       link="LBL_L" />
@@ -761,17 +779,17 @@
     name="RBS_L">
     <inertial>
       <origin
-        xyz="0 0 0"
+        xyz="-0.0467477283228513 0.000929715895879799 -6.65623765903593E-07"
         rpy="0 0 0" />
       <mass
-        value="0" />
+        value="0.0576835055796688" />
       <inertia
-        ixx="0"
-        ixy="0"
-        ixz="0"
-        iyy="0"
-        iyz="0"
-        izz="0" />
+        ixx="9.78169162854162E-06"
+        ixy="-5.12552767532585E-07"
+        ixz="-1.45029050660471E-10"
+        iyy="1.46267778399584E-05"
+        iyz="-7.32538517650851E-10"
+        izz="1.84573794225176E-05" />
     </inertial>
     <visual>
       <origin
@@ -811,13 +829,13 @@
       xyz="-1 0 0" />
     <limit
       lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      upper="1.5708"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="RBU_L">
@@ -837,7 +855,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -851,7 +869,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.01375 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -863,7 +881,7 @@
     name="RBU_J"
     type="revolute">
     <origin
-      xyz="-0.037107 -0.01375 0"
+      xyz="-0.037107 0 0"
       rpy="0 0 0" />
     <parent
       link="RBS_L" />
@@ -872,14 +890,14 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="0"
+      lower="-1.1"
       upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="RBL_L">
@@ -897,9 +915,9 @@
         iyz="-1.66560968972197E-06"
         izz="2.20437476815741E-05" />
     </inertial>
-    <visual>
+    <!-- <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -913,19 +931,19 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0305 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="package://tiny_quad/meshes/RBL_L.STL" />
       </geometry>
-    </collision>
+    </collision> -->
   </link>
   <joint
     name="RBL_J"
     type="revolute">
     <origin
-      xyz="0 -0.01675 -0.078391"
+      xyz="0 0 -0.078391"
       rpy="0 0 0" />
     <parent
       link="RBU_L" />
@@ -934,14 +952,14 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
-    <mimic
+      lower="-1.1"
+      upper="1.5708"
+      effort="1.0787315"
+      velocity="7.48" />
+    <!--mimic
       joint="LFS_J"
       multiplier="1"
-      offset="0" />
+      offset="0" /-->
   </joint>
   <link
     name="RBC_L">
@@ -961,7 +979,7 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -975,7 +993,7 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 -0.0425 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -987,7 +1005,7 @@
     name="RBC_J"
     type="fixed">
     <origin
-      xyz="1.9364E-05 -0.012 -0.085"
+      xyz="1.9364E-05 0 -0.085"
       rpy="0 0 0" />
     <parent
       link="RBL_L" />

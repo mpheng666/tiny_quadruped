@@ -54,17 +54,27 @@ namespace ac_ns
         void runLoop();
 
     private:
-        int16_t angle_max, angle_min;
+        // Class object declaration
         Adafruit_PWMServoDriver axis;
         button_ns::Button enable_button;
 
+        // servo related variables
         bool curr_servo_enable_;
-
+        bool prev_servo_enable_;
+        int16_t angle_max, angle_min;
         std::vector<int16_t> curr_joint_angle_ = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::vector<int16_t> prev_joint_angle_ = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::vector<int16_t> test_joint_angle_ = {90, 180, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::vector<int16_t> home_angle_ = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+        // Serial reading
         std::vector<int8_t> serial_buffer_;
+
+        // PID related variables
+        std::vector<int16_t> error_joint_angle;
+        int16_t P_value;
+        int16_t I_value;
+        int16_t D_value;
 
         uint8_t receiveSerialCommand();
         uint8_t sendSerialCommand();
@@ -73,6 +83,7 @@ namespace ac_ns
 
         void begin();
         void setHome();
+        void PIDControl();
         int angleToPulse(int &ang);
         void executeTargetAngle(int, int);
         void executeServo(int, int16_t, int16_t, int16_t);
