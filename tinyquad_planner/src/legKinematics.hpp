@@ -2,7 +2,6 @@
 #define LEG_KINEMATICS_
 
 // Servo related definition
-#include <Adafruit_PWMServoDriver.h>
 #define SERVOMIN 145
 #define SERVOMAX 550
 #define HIP1_SERVO_ADDRESS 1
