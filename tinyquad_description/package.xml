@@ -1,5 +1,5 @@
 <package format="2">
-  <name>tiny_quad</name>
+  <name>tinyquad_description</name>
   <version>1.0.0</version>
   <description>
     <p>URDF Description package for tiny_quad</p>

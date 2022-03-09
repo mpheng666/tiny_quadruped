@@ -16,9 +16,6 @@ namespace legKinematics_ns
     public:
         LegKinematics();
         ~LegKinematics();
-        void executeServo(Adafruit_PWMServoDriver &);
-        Adafruit_PWMServoDriver startServo();
-        void button_control();
 
     private:
         // limb's limitation

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="tinyquad">
+
+  <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_frame.urdf.xacro" />
+  <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_transmission.xacro" />
+
+  <xacro:tinyquad />
+
+  <xacro:tinyquad_transmission name="LFS"/>
+  <xacro:tinyquad_transmission name="LFU"/>
+  <xacro:tinyquad_transmission name="LFL"/>
+
+  <xacro:tinyquad_transmission name="RFS"/>
+  <xacro:tinyquad_transmission name="RFU"/>
+  <xacro:tinyquad_transmission name="RFL"/>
+
+  <xacro:tinyquad_transmission name="LBS"/>
+  <xacro:tinyquad_transmission name="LBU"/>
+  <xacro:tinyquad_transmission name="LBL"/>
+
+  <xacro:tinyquad_transmission name="RBS"/>
+  <xacro:tinyquad_transmission name="RBU"/>
+  <xacro:tinyquad_transmission name="RBL"/>
+
+  <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/tinyquad</robotNamespace>
+      </plugin>
+  </gazebo>
+
+</robot>

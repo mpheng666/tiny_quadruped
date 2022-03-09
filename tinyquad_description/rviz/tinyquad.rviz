@@ -58,42 +58,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        LBC_L:
-          Value: true
-        LBL_L:
-          Value: true
-        LBS_L:
-          Value: true
-        LBU_L:
-          Value: true
-        LFC_L:
-          Value: true
-        LFL_L:
-          Value: true
-        LFS_L:
-          Value: true
-        LFU_L:
-          Value: true
-        RBC_L:
-          Value: true
-        RBL_L:
-          Value: true
-        RBS_L:
-          Value: true
-        RBU_L:
-          Value: true
-        RFC_L:
-          Value: true
-        RFL_L:
-          Value: true
-        RFS_L:
-          Value: true
-        RFU_L:
-          Value: true
-        base_footprint:
-          Value: true
-        base_link:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 0.20000000298023224
       Name: TF
@@ -101,28 +65,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        base_footprint:
-          base_link:
-            LBS_L:
-              LBU_L:
-                LBL_L:
-                  LBC_L:
-                    {}
-            LFS_L:
-              LFU_L:
-                LFL_L:
-                  LFC_L:
-                    {}
-            RBS_L:
-              RBU_L:
-                RBL_L:
-                  RBC_L:
-                    {}
-            RFS_L:
-              RFU_L:
-                RFL_L:
-                  RFC_L:
-                    {}
+        {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -134,91 +77,7 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        LBC_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LBL_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LBS_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LBU_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LFC_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LFL_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LFS_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LFU_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         Link Tree Style: Links in Alphabetic Order
-        RBC_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RBL_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RBS_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RBU_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RFC_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RFL_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RFS_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RFU_L:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         base_link:
           Alpha: 1
           Show Axes: false
@@ -234,7 +93,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_footprint
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -258,7 +117,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.20625564455986023
+      Distance: 6.513146877288818
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -274,9 +133,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.24039852619171143
+      Pitch: 0.6753984689712524
       Target Frame: <Fixed Frame>
-      Yaw: 6.2785820960998535
+      Yaw: 4.668562412261963
     Saved: ~
 Window Geometry:
   Displays:

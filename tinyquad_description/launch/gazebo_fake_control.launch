@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find tinyquad_description)/launch/gazebo.launch" />
+    <include file="$(find tinyquad_description)/launch/display.launch" />
+</launch>
