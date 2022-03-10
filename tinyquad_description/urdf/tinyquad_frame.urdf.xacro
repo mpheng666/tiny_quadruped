@@ -161,10 +161,10 @@
       <child
         link="LFU_L" />
       <axis
-        xyz="0 -1 0" />
+        xyz="0 1 0" />
       <limit
-        lower="-1"
-        upper="0"
+        lower="0"
+        upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
       <!--mimic
@@ -224,10 +224,10 @@
       <child
         link="LFL_L" />
       <axis
-        xyz="0 -1 0" />
+        xyz="0 1 0" />
       <limit
-        lower="-1.1"
-        upper="1.5708"
+        lower="-1.5708"
+        upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
       <!--mimic
@@ -342,10 +342,10 @@
       <child
         link="RFS_L" />
       <axis
-        xyz="1 0 0" />
+        xyz="-1 0 0" />
       <limit
-        lower="-1.5708"
-        upper="0"
+        lower="0"
+        upper="1.5708"
         effort="1.0787315"
         velocity="7.48" />
       <!--mimic
@@ -466,10 +466,10 @@
       <child
         link="RFL_L" />
       <axis
-        xyz="0 -1 0" />
+        xyz="0 1 0" />
       <limit
-        lower="-1.1"
-        upper="1.5708"
+        lower="-1.5708"
+        upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
       <!--mimic
@@ -646,7 +646,7 @@
         xyz="0 1 0" />
       <limit
         lower="0"
-        upper="1"
+        upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
       <!--mimic
@@ -882,10 +882,10 @@
       <child
         link="RBU_L" />
       <axis
-        xyz="0 -1 0" />
+        xyz="0 1 0" />
       <limit
-        lower="-1.1"
-        upper="0"
+        lower="0"
+        upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
       <!--mimic
@@ -944,10 +944,10 @@
       <child
         link="RBL_L" />
       <axis
-        xyz="0 -1 0" />
+        xyz="0 1 0" />
       <limit
-        lower="-1.1"
-        upper="1.5708"
+        lower="-1.5708"
+        upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
       <!--mimic

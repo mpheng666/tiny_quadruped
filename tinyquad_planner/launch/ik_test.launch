@@ -1,6 +1,6 @@
 <launch>
 
-    <include file="$(find tiny_quad)/launch/display.launch" />
+    <include file="$(find tinyquad_description)/launch/display.launch" />
     <!-- <include file="$(find tiny_quad)/launch/gazebo.launch" /> -->
 
     <node name="tq_ik_test_node" pkg="tinyquad_planner" type="tq_ik_test_node" output="screen"/>
