@@ -1,16 +1,7 @@
-#ifndef LEG_KINEMATICS_
-#define LEG_KINEMATICS_
-
-// Servo related definition
-#define SERVOMIN 145
-#define SERVOMAX 550
-#define HIP1_SERVO_ADDRESS 1
-#define SHD1_SERVO_ADDRESS 2
-#define ELB1_SERVO_ADDRESS 3
-
+#ifndef TINYQUAD_PLANNER_LEG_KINEMATICS_
+#define TINYQUAD_PLANNER_LEG_KINEMATICS_
 namespace legKinematics_ns
 {
-
     class LegKinematics
     {
     public:
@@ -33,7 +24,6 @@ namespace legKinematics_ns
         void forwardKinematics();
         void pathSegmentation();
 
-        int angleToPulse(int ang);
     };
 } // ns legKinematics_ns
 

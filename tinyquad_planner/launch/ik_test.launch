@@ -1,8 +1,14 @@
 <launch>
 
-    <include file="$(find tinyquad_description)/launch/display.launch" />
-    <!-- <include file="$(find tiny_quad)/launch/gazebo.launch" /> -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find tinyquad_description)/urdf/tinyquad.urdf.xacro" />
+
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tinyquad_description)/rviz/tinyquad.rviz" />
+    
+    <!-- <include file="$(find tinyquad_description)/launch/gazebo_fake_controll.launch" /> -->
 
     <node name="tq_ik_test_node" pkg="tinyquad_planner" type="tq_ik_test_node" output="screen"/>
+    <node name="joy_node" pkg="joy" type="joy_node" output="screen"/>
 
 </launch>

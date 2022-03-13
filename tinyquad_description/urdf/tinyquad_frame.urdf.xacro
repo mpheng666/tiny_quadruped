@@ -167,10 +167,6 @@
         upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
     </joint>
 
     <link
@@ -189,7 +185,7 @@
           iyz="1.66567501013991E-06"
           izz="2.20436639521685E-05" />
       </inertial>
-      <!-- <visual>
+      <visual>
         <origin
           xyz="0 0.0305 0"
           rpy="0 0 0" />
@@ -211,7 +207,7 @@
           <mesh
             filename="package://tinyquad_description/meshes/LFL_L.STL" />
         </geometry>
-      </collision> -->
+      </collision>
     </link>
     <joint
       name="LFL_J"
@@ -230,10 +226,6 @@
         upper="1.1"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
     </joint>
     <link
       name="LFC_L">
@@ -254,10 +246,9 @@
       <visual>
         <origin
           xyz="0 0.0425 0"
-          rpy="0 0 0" />
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/LFC_L.STL" />
+          <cylinder radius="0.001" length="0.01"/>
         </geometry>
         <material
           name="">
@@ -268,25 +259,18 @@
       <collision>
         <origin
           xyz="0 0.0425 0"
-          rpy="0 0 0" />
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/LFC_L.STL" />
+            <cylinder radius="0.001" length="0.1"/>
         </geometry>
       </collision>
     </link>
-    <joint
-      name="LFC_J"
-      type="fixed">
-      <origin
-        xyz="2.0629E-05 0 -0.085"
-        rpy="0 0 0" />
-      <parent
-        link="LFL_L" />
-      <child
-        link="LFC_L" />
-      <axis
-        xyz="0 0 0" />
+    <joint name="LFC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="LFL_L" />
+      <child link="LFC_L" />
+      <axis xyz="0 1 0" />
     </joint>
 
 
