@@ -22,69 +22,87 @@ namespace bezier_ns
         while(private_nh_.ok())
         {
 
-            visualization_msgs::Marker points, line_strip, line_list;
-            points.header.frame_id = line_strip.header.frame_id = line_list.header.frame_id = "my_frame";
-            points.header.stamp = line_strip.header.stamp = line_list.header.stamp = ros::Time::now();
-            points.ns = line_strip.ns = line_list.ns = "points_and_lines";
-            points.action = line_strip.action = line_list.action = visualization_msgs::Marker::ADD;
-            points.pose.orientation.w = line_strip.pose.orientation.w = line_list.pose.orientation.w = 1.0;
+            visualization_msgs::Marker point_1, point_2, point_3, curve_point;
+            point_1.header.frame_id = point_2.header.frame_id = point_3.header.frame_id = curve_point.header.frame_id = "my_frame";
+            point_1.header.stamp = point_2.header.stamp = point_3.header.stamp = curve_point.header.stamp = ros::Time::now();
+            point_1.ns = point_2.ns = point_3.ns = curve_point.ns = "bezier";
+            point_1.action = point_2.action = point_3.action = curve_point.action = visualization_msgs::Marker::ADD;
+            point_1.pose.orientation.w = point_2.pose.orientation.w = point_3.pose.orientation.w = curve_point.pose.orientation.w = 1.0;
 
-            points.id = 0;
-            line_strip.id = 1;
-            line_list.id = 2;
+            point_1.id = 0;
+            point_2.id = 1;
+            point_3.id = 2;
+            curve_point.id = 3;
 
-            points.type = visualization_msgs::Marker::POINTS;
-            line_strip.type = visualization_msgs::Marker::LINE_STRIP;
-            line_list.type = visualization_msgs::Marker::LINE_LIST;
+            point_1.type = visualization_msgs::Marker::SPHERE;
+            point_2.type = visualization_msgs::Marker::SPHERE;
+            point_3.type = visualization_msgs::Marker::SPHERE;
+            curve_point.type = visualization_msgs::Marker::POINTS;
 
-            // POINTS markers use x and y scale for width/height respectively
-            points.scale.x = 0.2;
-            points.scale.y = 0.2;
+            // point_1 markers use x and y scale for width/height respectively
+            point_1.scale.x = 0.2;
+            point_1.scale.y = 0.2;
+            point_1.scale.z = 0.2;
 
-            // LINE_STRIP/LINE_LIST markers use only the x component of scale, for the line width
-            line_strip.scale.x = 0.1;
-            line_list.scale.x = 0.1;
+            point_2.scale.x = 0.2;
+            point_2.scale.y = 0.2;
+            point_2.scale.z = 0.2;
 
-            // Points are green
-            points.color.g = 1.0f;
-            points.color.a = 1.0;
+            point_3.scale.x = 0.2;
+            point_3.scale.y = 0.2;
+            point_3.scale.z = 0.2;
 
-            // Line strip is blue
-            line_strip.color.b = 1.0;
-            line_strip.color.a = 1.0;
+            curve_point.scale.x = 0.01;
+            curve_point.scale.y = 0.01;
+            curve_point.scale.z = 0.01;
 
-            // Line list is red
-            line_list.color.r = 1.0;
-            line_list.color.a = 1.0;
+            point_1.color.g = 1.0;
+            point_1.color.a = 1.0;
 
-            // Create the vertices for the points and lines
-            for (uint32_t i = 0; i < 100; ++i)
+            point_2.color.g = 1.0;
+            point_2.color.a = 1.0;
+
+            point_3.color.g = 1.0;
+            point_3.color.a = 1.0;
+
+            curve_point.color.r = 1.0;
+            curve_point.color.a = 1.0;
+
+            point_1.pose.position.x = 0.0;
+            point_1.pose.position.y = 0.0;
+            point_1.pose.position.z = 0.0;
+
+            point_2.pose.position.x = 1.0;
+            point_2.pose.position.y = -0.5;
+            point_2.pose.position.z = 0.0;
+
+            point_3.pose.position.x = 2.0;
+            point_3.pose.position.y = 1.0;
+            point_3.pose.position.z = 0.0;
+
+            point_marker_pub_.publish(point_1);
+            point_marker_pub_.publish(point_2);
+            point_marker_pub_.publish(point_3);
+
+            for (double u = 0; u < 1 ; u+= 0.01)
             {
-                float y = 5 * sin(f + i / 100.0f * 2 * M_PI);
-                float z = 5 * cos(f + i / 100.0f * 2 * M_PI);
+                // curve_point.pose.position.x = pow(1-u, 2)*point_1.pose.position.x + 2*(1-u)*u*point_2.pose.position.x + pow(u, 2)*point_3.pose.position.x;
+                // curve_point.pose.position.y = pow(1-u, 2)*point_1.pose.position.y + 2*(1-u)*u*point_2.pose.position.y + pow(u, 2)*point_3.pose.position.y;
+                point_marker_pub_.publish(point_1);
+                point_marker_pub_.publish(point_2);
+                point_marker_pub_.publish(point_3);
 
                 geometry_msgs::Point p;
-                p.x = (int32_t)i - 50;
-                p.y = y;
-                p.z = z;
-
-                points.points.push_back(p);
-                line_strip.points.push_back(p);
-
-                // The line list needs two points for each line
-                line_list.points.push_back(p);
-                p.z += 1.0;
-                line_list.points.push_back(p);
+                p.x = pow(1-u, 2)*point_1.pose.position.x + 2*(1-u)*u*point_2.pose.position.x + pow(u, 2)*point_3.pose.position.x;
+                p.y = pow(1-u, 2)*point_1.pose.position.y + 2*(1-u)*u*point_2.pose.position.y + pow(u, 2)*point_3.pose.position.y;
+                curve_point.points.push_back(p);
+                curve_point.pose.position.z = 0.0;
+                point_marker_pub_.publish(curve_point);
+                r.sleep();
             }
-
-            point_marker_pub_.publish(points);
-            point_marker_pub_.publish(line_strip);
-            point_marker_pub_.publish(line_list);
 
             r.sleep();
             ros::spinOnce();
-
-            f += 0.04;
         }
 
     }

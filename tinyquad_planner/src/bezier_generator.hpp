@@ -25,9 +25,6 @@ namespace bezier_ns
 
             static tf::TransformBroadcaster points_tf;
             
-            std::vector<double> Points;
-            double f {0.0f};
-
             void loadParam();
             // visualization_msgs::Marker constructMarker(uint32_t shape, std::string frame_id, ros::Time stamp, );
     };
