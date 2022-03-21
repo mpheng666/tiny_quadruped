@@ -22,6 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   trac_ik_lib
+  visualization_msgs
 )
 find_package(Boost REQUIRED COMPONENTS date_time)
 find_package(orocos_kdl REQUIRED)
@@ -146,6 +147,8 @@ include_directories(
 
 add_executable(tq_ik_test_node src/tinyquad_ik_test.cpp)
 target_link_libraries(tq_ik_test_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
+add_executable(bezier_node src/bezier_node.cpp src/bezier_generator.cpp)
+target_link_libraries(bezier_node ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

@@ -1,0 +1,9 @@
+<launch>
+
+    <!-- <node name="rviz" pkg="rviz" type="rviz" /> -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tinyquad_planner)/rviz/bezier.rviz" />
+
+    <node name="bezier_node" pkg="tinyquad_planner" type="bezier_node" output="screen"/>
+    <!-- <node name="joy_node" pkg="joy" type="joy_node" output="screen"/> -->
+
+</launch>

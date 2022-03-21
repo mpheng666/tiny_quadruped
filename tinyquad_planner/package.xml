@@ -81,6 +81,7 @@
   <exec_depend>kdl_parser</exec_depend>
   <exec_depend>urdf</exec_depend>
   <depend>sensor_msgs</depend>
+  <depend>visualization_msgs</depend>
   <depend>std_msgs</depend>
   <depend>orocos_kdl</depend>
   <depend>trac_ik_lib</depend>
