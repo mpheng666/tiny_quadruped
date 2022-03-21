@@ -62,10 +62,6 @@ Visualization Manager:
           Value: true
         LBL_L:
           Value: true
-        LBS_L:
-          Value: true
-        LBU_L:
-          Value: true
         LFC_L:
           Value: true
         LFL_L:
@@ -78,21 +74,15 @@ Visualization Manager:
           Value: true
         RBL_L:
           Value: true
-        RBS_L:
-          Value: true
-        RBU_L:
-          Value: true
         RFC_L:
           Value: true
         RFL_L:
           Value: true
-        RFS_L:
-          Value: true
-        RFU_L:
-          Value: true
         base_footprint:
           Value: true
         base_link:
+          Value: true
+        leg_contact_frame:
           Value: true
       Marker Alpha: 1
       Marker Scale: 0.20000000298023224
@@ -103,26 +93,13 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
-            LBS_L:
-              LBU_L:
-                LBL_L:
-                  LBC_L:
-                    {}
             LFS_L:
               LFU_L:
                 LFL_L:
                   LFC_L:
                     {}
-            RBS_L:
-              RBU_L:
-                RBL_L:
-                  RBC_L:
-                    {}
-            RFS_L:
-              RFU_L:
-                RFL_L:
-                  RFC_L:
-                    {}
+            leg_contact_frame:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -162,6 +139,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         LFS_L:
           Alpha: 1
           Show Axes: false
@@ -226,6 +204,14 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /visualization_marker
+      Name: Marker
+      Namespaces:
+        basic_shapes: true
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -254,7 +240,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.2361341714859009
+      Distance: 0.9572623372077942
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -270,9 +256,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5253986716270447
+      Pitch: 0.05039891228079796
       Target Frame: <Fixed Frame>
-      Yaw: 0.9853917360305786
+      Yaw: 1.5553910732269287
     Saved: ~
 Window Geometry:
   Displays:

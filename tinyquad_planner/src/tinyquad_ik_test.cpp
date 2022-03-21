@@ -9,10 +9,26 @@
 #include "trac_ik/trac_ik.hpp"
 #include "sensor_msgs/Joy.h"
 #include "urdf/model.h"
+#include "tf/transform_broadcaster.h"
+#include "visualization_msgs/Marker.h"
 
 const double PI = 3.14159;
 KDL::JntArray joy_joints(4);
 KDL::Frame leg_contact_frame;
+
+double bias_x_nominal = -0.01;
+double bias_y_nominal = 0.00;
+double bias_z_nominal = 0.045;
+
+double bias_x = 0.120024 + bias_x_nominal;
+double bias_y = 0.050443 + bias_y_nominal;
+double bias_z = -0.163388 + bias_z_nominal;
+
+double scale_x = 0.1;
+double scale_y = 0.1;
+double scale_z = 0.05;
+
+visualization_msgs::Marker marker;
 
 enum class Mode
 {
@@ -27,13 +43,24 @@ void joyCb(const sensor_msgs::Joy::ConstPtr &msg)
     if (msg->buttons[0] == 1)
     {
         leg_mode = Mode::cartesian_mode;
-        leg_contact_frame.p.x(msg->axes[0]+0.120024);
-        leg_contact_frame.p.y(msg->axes[1]+0.050443);
-        leg_contact_frame.p.z(msg->axes[2]-0.163388);
     }
     else if (msg->buttons[1] == 1)
     {
         leg_mode = Mode::joint_mode;
+    }
+
+    if (leg_mode == Mode::cartesian_mode)
+    {
+        leg_contact_frame.p.x(msg->axes[0]*scale_x + bias_x);
+        leg_contact_frame.p.y(msg->axes[3]*scale_y + bias_y);
+        leg_contact_frame.p.z(msg->axes[1]*scale_z + bias_z);
+        marker.header.stamp = ros::Time::now();
+        marker.pose.position.x = msg->axes[0]*scale_x + bias_x;
+        marker.pose.position.y = msg->axes[3]*scale_y + bias_y;
+        marker.pose.position.z = msg->axes[1]*scale_z + bias_z;
+    }
+    else if (leg_mode == Mode::joint_mode)
+    {
         joy_joints(0) = msg->axes[0];
         joy_joints(1) = msg->axes[1];
         joy_joints(2) = msg->axes[2];
@@ -46,9 +73,47 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "tq_ik_test_node");
     ros::NodeHandle n;
     ros::Publisher joint_pub = n.advertise<sensor_msgs::JointState>("joint_states", 1);
+    ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
     ros::Subscriber joy_sub = n.subscribe<sensor_msgs::Joy>("joy", 1000, joyCb);
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(20);
 
+    static tf::TransformBroadcaster tf_marker;
+    tf::Transform tf;
+    tf::Quaternion q;
+    tf.setOrigin( tf::Vector3(0.0, 0.0, 0.0) );
+    q.setRPY(0,0,0);
+    tf.setRotation(q);
+    tf_marker.sendTransform(tf::StampedTransform(tf, ros::Time::now(), "base_link", "leg_contact_frame"));
+
+    // Marker for debugging
+    uint32_t shape = visualization_msgs::Marker::CUBE;
+    marker.header.frame_id = "leg_contact_frame";
+    marker.header.stamp = ros::Time::now();
+
+    marker.ns = "basic_shapes";
+    marker.id = 0;
+    marker.type = shape;
+
+    marker.action = visualization_msgs::Marker::ADD;
+
+    marker.pose.position.x = 0;
+    marker.pose.position.y = 0;
+    marker.pose.position.z = 0;
+    marker.pose.orientation.x = 0.0;
+    marker.pose.orientation.y = 0.0;
+    marker.pose.orientation.z = 0.0;
+    marker.pose.orientation.w = 1.0;
+
+    marker.scale.x = 0.025;
+    marker.scale.y = 0.025;
+    marker.scale.z = 0.025;
+
+    marker.color.r = 0.0f;
+    marker.color.g = 1.0f;
+    marker.color.b = 0.0f;
+    marker.color.a = 1.0;
+
+    marker.lifetime = ros::Duration();
     // std::vector<std::string> joint_name = {"LFS_J", "LFU_J", "LFL_J",
     //                                        "RFS_J", "RFU_J", "RFL_J",
     //                                        "LBS_J", "LBU_J", "LBL_J",
@@ -110,6 +175,8 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
+        tf_marker.sendTransform(tf::StampedTransform(tf, ros::Time::now(), "base_link", "leg_contact_frame"));
+
         switch (leg_mode)
         {
             // 1. Cartesian mode: listen joy::end_cartesian, calculate joints from inverse kinematics
@@ -117,8 +184,11 @@ int main(int argc, char **argv)
                 {
                     joint_state.header.stamp = ros::Time::now();
                     int rc = tracik_solver.CartToJnt(curr_joint_array, leg_contact_frame, ik_result);
+                    ROS_INFO("ik result status: %i", rc);
                     joint_state.name.resize(number_of_joints);
                     joint_state.position.resize(number_of_joints);
+
+                    marker_pub.publish(marker);
                     for (size_t i = 0; i < number_of_joints; i++)
                     {
                         ROS_INFO("ik_result: %f", double(ik_result(i)));
@@ -142,7 +212,7 @@ int main(int argc, char **argv)
                     {
                         joint_state.name[i] = joint_name[i];
                         joint_state.position[i] = joy_joints(i);
-                    }
+                    }   
                     print_frame_lambda(leg_contact_frame);
                     ROS_INFO("Leg is in joint mode");
                     break;
