@@ -2,6 +2,7 @@
 #include <string>
 
 #include "ros/ros.h"
+#include "geometry_msgs/PointStamped.h"
 #include "sensor_msgs/JointState.h"
 #include "tf/transform_broadcaster.h"
 #include "kdl_parser/kdl_parser.hpp"
@@ -33,12 +34,13 @@ visualization_msgs::Marker marker;
 enum class Mode
 {
     cartesian_mode,
-    joint_mode
+    joint_mode,
+    bezier_mode
 };
 
 Mode leg_mode = Mode::cartesian_mode;
 
-void joyCb(const sensor_msgs::Joy::ConstPtr &msg)
+void joyCb(const sensor_msgs::Joy::ConstPtr& msg)
 {
     if (msg->buttons[0] == 1)
     {
@@ -48,16 +50,20 @@ void joyCb(const sensor_msgs::Joy::ConstPtr &msg)
     {
         leg_mode = Mode::joint_mode;
     }
+    else if (msg->buttons[2] == 1)
+    {
+        leg_mode = Mode::bezier_mode;
+    }
 
     if (leg_mode == Mode::cartesian_mode)
     {
-        leg_contact_frame.p.x(msg->axes[0]*scale_x + bias_x);
-        leg_contact_frame.p.y(msg->axes[3]*scale_y + bias_y);
-        leg_contact_frame.p.z(msg->axes[1]*scale_z + bias_z);
-        marker.header.stamp = ros::Time::now();
         marker.pose.position.x = msg->axes[0]*scale_x + bias_x;
         marker.pose.position.y = msg->axes[3]*scale_y + bias_y;
         marker.pose.position.z = msg->axes[1]*scale_z + bias_z;
+        leg_contact_frame.p.x(marker.pose.position.x);
+        leg_contact_frame.p.y(marker.pose.position.y);
+        leg_contact_frame.p.z(marker.pose.position.z);
+        marker.header.stamp = ros::Time::now();
     }
     else if (leg_mode == Mode::joint_mode)
     {
@@ -68,13 +74,21 @@ void joyCb(const sensor_msgs::Joy::ConstPtr &msg)
     }
 }
 
+void bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg)
+{
+    leg_contact_frame.p.x(msg->point.x);
+    leg_contact_frame.p.y(msg->point.y);
+    leg_contact_frame.p.z(msg->point.z);
+}
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "tq_ik_test_node");
     ros::NodeHandle n;
     ros::Publisher joint_pub = n.advertise<sensor_msgs::JointState>("joint_states", 1);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-    ros::Subscriber joy_sub = n.subscribe<sensor_msgs::Joy>("joy", 1000, joyCb);
+    ros::Subscriber joy_sub = n.subscribe<sensor_msgs::Joy>("joy", 100, &joyCb);
+    ros::Subscriber bezier_sub = n.subscribe<geometry_msgs::PointStamped>("bezier_points", 100, &bezierCb);
     ros::Rate loop_rate(20);
 
     static tf::TransformBroadcaster tf_marker;
@@ -215,6 +229,27 @@ int main(int argc, char **argv)
                     }   
                     print_frame_lambda(leg_contact_frame);
                     ROS_INFO("Leg is in joint mode");
+                    break;
+                }
+
+            case Mode::bezier_mode:
+                {
+                    joint_state.header.stamp = ros::Time::now();
+                    int rc = tracik_solver.CartToJnt(curr_joint_array, leg_contact_frame, ik_result);
+                    ROS_INFO("ik result status: %i", rc);
+                    joint_state.name.resize(number_of_joints);
+                    joint_state.position.resize(number_of_joints);
+
+                    marker_pub.publish(marker);
+                    for (size_t i = 0; i < number_of_joints; i++)
+                    {
+                        ROS_INFO("ik_result: %f", double(ik_result(i)));
+                        joint_state.name[i] = joint_name[i];
+                        joint_state.position[i] = ik_result(i);
+                        curr_joint_array.data[i] = ik_result(i);
+                    }
+                    print_frame_lambda(leg_contact_frame);
+                    ROS_INFO("Leg is in bezier mode");
                     break;
                 }
 

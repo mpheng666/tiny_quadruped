@@ -83,6 +83,7 @@
   <depend>sensor_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
   <depend>orocos_kdl</depend>
   <depend>trac_ik_lib</depend>
   <depend>boost</depend>
