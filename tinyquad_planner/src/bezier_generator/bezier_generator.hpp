@@ -33,7 +33,7 @@ namespace bezier_ns
             double factorial(int n);
             double comb(int n, int k);
             Eigen::MatrixXd getBezierMatrix(int n);
-            std::vector<geometry_msgs::Point> evaluateBezier(std::vector<geometry_msgs::Point> points, double resolution);
+            std::vector<geometry_msgs::Point> evaluateBezier(std::vector<geometry_msgs::Point> &points, double resolution);
             // void constructMarker(visualization_msgs::Marker marker, int32_t shape, std::string frame_id, std::string ns, geometry_msgs::Point point, int id, geometry_msgs::Vector3 scale, std_msgs::ColorRGBA colour);
             void constructMarker(visualization_msgs::Marker marker, int32_t shape, std::string frame_id, std::string ns, geometry_msgs::Point point, int id, double scale, float colour);
     };

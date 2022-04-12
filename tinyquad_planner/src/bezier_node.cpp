@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include "bezier_generator.hpp"
+#include "bezier_generator/bezier_generator.hpp"
 
 int main(int argc, char** argv)
 {

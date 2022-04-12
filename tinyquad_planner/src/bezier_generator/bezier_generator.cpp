@@ -95,7 +95,7 @@ namespace bezier_ns
 
             if(matrix_flag)
             {
-                bc_points = evaluateBezier(ac_points, 0.01);
+                bc_points = evaluateBezier(ac_points, 0.01f);
                 matrix_flag = false;
             }
 
@@ -193,7 +193,7 @@ namespace bezier_ns
     }
 
     // return T*M*P
-    std::vector<geometry_msgs::Point> Bezier::evaluateBezier(std::vector<geometry_msgs::Point> anchor_points, double resolution)
+    std::vector<geometry_msgs::Point> Bezier::evaluateBezier(std::vector<geometry_msgs::Point> &anchor_points, double resolution)
     {
         std::vector<geometry_msgs::Point> bcurve_points;
         int n = anchor_points.size();
