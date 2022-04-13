@@ -6,7 +6,7 @@ namespace legKinematics_ns
     prefix(prefix),
     x_mirror(x_mirror),
     y_mirror(y_mirror),
-    spinner(4),
+    // spinner(4),
     joint_pub(p_nh_.advertise<sensor_msgs::JointState>("joint_states", 1)),
     marker_pub(p_nh_.advertise<visualization_msgs::Marker>("visualization_target_marker", 1)),
     bezier_sub(p_nh_.subscribe<geometry_msgs::PointStamped>("bezier_points", 100, &LegKinematics::bezierCb, this)),
@@ -22,11 +22,11 @@ namespace legKinematics_ns
     void LegKinematics::start()
     {
         ros::Rate r(LOOP_RATE);
-        spinner.start();
+        // spinner.start();
 
         while(ros::ok())
         {
-            // ros::spinOnce();
+            ros::spinOnce();
             r.sleep();
             createLeg();
         }

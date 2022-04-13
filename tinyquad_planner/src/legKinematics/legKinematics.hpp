@@ -35,7 +35,7 @@ namespace legKinematics_ns
 
     private:
         ros::NodeHandle p_nh_;
-        ros::AsyncSpinner spinner;
+        // ros::AsyncSpinner spinner;
         ros::Publisher joint_pub;
         ros::Publisher marker_pub;
         ros::Subscriber joy_sub;
