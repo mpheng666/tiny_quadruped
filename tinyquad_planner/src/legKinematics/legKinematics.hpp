@@ -90,14 +90,28 @@ namespace legKinematics_ns
         sensor_msgs::JointState curr_joint_state;
         sensor_msgs::JointState prev_joint_state;
 
+        KDL::Chain chain;
+        KDL::JntArray lower_limit, upper_limit;
+
+        uint number_of_joints {0};
+
+        KDL::JntArray curr_joint_array;
+
+        KDL::JntArray ik_result;
+        KDL::ChainFkSolverPos_recursive fk_solver;
 
         void loadParam();
         void initTf();
         void initMarker();
         void createLeg();
+        bool checkKDLChain();
+        void getKDLLimits();
+        void getJointsNominal();
         void inverseKinematics();
+        void initForwardKinematics();
         void forwardKinematics();
-        void pathSegmentation();
+        void updateFSM();
+        // void pathSegmentation();
         void joyCb(const sensor_msgs::Joy::ConstPtr& msg);
         void bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg);
 
