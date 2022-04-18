@@ -39,8 +39,8 @@ include_directories(
 add_executable(tq_ik_test_node src/tinyquad_ik_test.cpp)
 target_link_libraries(tq_ik_test_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
 
-add_executable(leg_kinematics_node src/legKinematics/legKinematics.cpp src/legKinematics_node.cpp)
-target_link_libraries(leg_kinematics_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
-
 add_executable(bezier_node src/bezier_node.cpp src/bezier_generator/bezier_generator.cpp)
 target_link_libraries(bezier_node ${catkin_LIBRARIES})
+
+add_executable(leg_kinematics_node src/legKinematics/legKinematics.cpp src/legKinematics_node.cpp)
+target_link_libraries(leg_kinematics_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})

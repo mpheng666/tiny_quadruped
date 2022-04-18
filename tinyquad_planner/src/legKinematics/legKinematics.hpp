@@ -54,7 +54,7 @@ namespace legKinematics_ns
         double timeout {0.005f};
         double eps {1e-5f};
         const std::string chain_start {"base_link"};
-        const std::string chain_end {prefix + "C_J"};
+        const std::string chain_end {prefix + "C_L"};
         TRAC_IK::TRAC_IK tracik_solver;
 
         std::vector<std::string> joint_name
@@ -93,7 +93,7 @@ namespace legKinematics_ns
         KDL::Chain chain;
         KDL::JntArray lower_limit, upper_limit;
 
-        uint number_of_joints {0};
+        uint number_of_joints {4};
 
         KDL::JntArray curr_joint_array;
 
@@ -115,7 +115,7 @@ namespace legKinematics_ns
         void joyCb(const sensor_msgs::Joy::ConstPtr& msg);
         void bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg);
 
-        Mode leg_mode = Mode::cartesian_mode;
+        Mode leg_mode {Mode::cartesian_mode};
 
     };
 } // ns legKinematics_ns

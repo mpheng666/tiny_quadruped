@@ -23,11 +23,15 @@ namespace legKinematics_ns
     void LegKinematics::start()
     {
         ros::Rate r(LOOP_RATE);
+        ros::Rate init_r(0.5);
+
+        init_r.sleep();
         this->loadParam();
         this->createLeg();
         this->initTf();
         this->initMarker();
-        
+
+
         if(this->checkKDLChain()) 
         {
             this->getKDLLimits();
@@ -54,9 +58,16 @@ namespace legKinematics_ns
         transformStamped.header.stamp = ros::Time::now();
         transformStamped.header.frame_id = "base_link";
         transformStamped.child_frame_id = "foot_contact_frame";
-        tf.setOrigin( tf2::Vector3(0.0, 0.0, 0.0) );
+        tf.setOrigin(tf2::Vector3(0.0, 0.0, 0.0));
         q.setRPY(0.0, 0.0, 0.0);
         tf.setRotation(q);
+        transformStamped.transform.translation.x = 0.0f;
+        transformStamped.transform.translation.y = 0.0f;
+        transformStamped.transform.translation.z = 0.0f;
+        transformStamped.transform.rotation.x = q.x();
+        transformStamped.transform.rotation.y = q.y();
+        transformStamped.transform.rotation.z = q.z();
+        transformStamped.transform.rotation.w = q.w();
         tf_bc.sendTransform(transformStamped);
     }
 
@@ -109,6 +120,7 @@ namespace legKinematics_ns
     void LegKinematics::getKDLLimits()
     {
         bool valid = tracik_solver.getKDLLimits(lower_limit, upper_limit);
+        ROS_INFO("Get limits");
         if (!valid)
         {
             ROS_ERROR("There was no valid KDL joint limits found");
@@ -117,11 +129,13 @@ namespace legKinematics_ns
 
     void LegKinematics::getJointsNominal()
     {
-        KDL::JntArray nominal(number_of_joints);
-        for (size_t i = 0; i < nominal.data.size(); i++)
+        // KDL::JntArray nominal(number_of_joints);
+        KDL::JntArray nominal(4);
+        ROS_INFO("Get nominal: %li", nominal.data.size());;
+        for (size_t i = 0; i < 4; i++)
         {
             nominal(i) = (lower_limit(i) + upper_limit(i)) / 2.0;
-            printf("nominal %li: %f \n", i, nominal(i));
+            ROS_INFO("nominal %li: %f \n", i, nominal(i));
         }
         curr_joint_array = nominal;
     }
@@ -145,6 +159,7 @@ namespace legKinematics_ns
         joint_state.position.resize(number_of_joints);
 
         marker_pub.publish(target_marker);
+        ROS_INFO("Number of joints: %i", number_of_joints);
         for (size_t i = 0; i < number_of_joints; i++)
         {
             ROS_INFO("ik_result: %f", double(ik_result(i)));
@@ -181,12 +196,14 @@ namespace legKinematics_ns
         {
         case Mode::cartesian_mode:
             {
+                ROS_INFO("IK mode");
                 inverseKinematics();
                 break;
             }
 
         case Mode::joint_mode:
             {
+                ROS_INFO("FK mode");
                 forwardKinematics();
                 break;
             }
@@ -222,12 +239,13 @@ namespace legKinematics_ns
 
         if (leg_mode == Mode::cartesian_mode)
         {
+            ROS_INFO("target x: %f", target_marker.pose.position.x);
             target_marker.pose.position.x = msg->axes[0]*scale_x + bias_x;
             target_marker.pose.position.y = msg->axes[3]*scale_y + bias_y;
             target_marker.pose.position.z = msg->axes[1]*scale_z + bias_z;
-            foot_contact_frame.p.x(target_marker.pose.position.x);
-            foot_contact_frame.p.y(target_marker.pose.position.y);
-            foot_contact_frame.p.z(target_marker.pose.position.z);
+            // foot_contact_frame.p.x(target_marker.pose.position.x);
+            // foot_contact_frame.p.y(target_marker.pose.position.y);
+            // foot_contact_frame.p.z(target_marker.pose.position.z);
             target_marker.header.stamp = ros::Time::now();
         }
         else if (leg_mode == Mode::joint_mode)
