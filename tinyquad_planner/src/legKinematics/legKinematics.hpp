@@ -38,10 +38,10 @@ namespace legKinematics_ns
         // ros::AsyncSpinner spinner;
         ros::Publisher joint_pub;
         ros::Publisher marker_pub;
-        ros::Subscriber joy_sub;
         ros::Subscriber bezier_sub;
+        ros::Subscriber joy_sub;
 
-        const double LOOP_RATE {20.0f};
+        const double LOOP_RATE {100.0f};
 
         KDL::JntArray joy_joints;
         KDL::Frame foot_contact_frame;
@@ -69,8 +69,8 @@ namespace legKinematics_ns
         const double bias_y_nominal {0.00f};
         const double bias_z_nominal {0.045f};
 
-        const double bias_x {0.120024f + bias_x_nominal};
-        const double bias_y {0.050443f + bias_y_nominal};
+        const double bias_x {x_mirror * (0.120024f + bias_x_nominal)};
+        const double bias_y {y_mirror * (0.050443f + bias_y_nominal)};
         const double bias_z {-0.163388f + bias_z_nominal};
 
         const double scale_x {0.1f};

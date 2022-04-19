@@ -273,8 +273,6 @@
       <axis xyz="0 1 0" />
     </joint>
 
-
-    
     <link
       name="RFS_L">
       <inertial>
@@ -332,10 +330,7 @@
         upper="1.5708"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="RFU_L">
@@ -391,13 +386,10 @@
         xyz="0 1 0" />
       <limit
         lower="0"
-        upper="1.1"
+        upper="1.4"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="RFL_L">
@@ -415,7 +407,7 @@
           iyz="-1.66560968972201E-06"
           izz="2.20437476815741E-05" />
       </inertial>
-      <!-- <visual>
+      <visual>
         <origin
           xyz="0 -0.0305 0"
           rpy="0 0 0" />
@@ -437,7 +429,7 @@
           <mesh
             filename="package://tinyquad_description/meshes/RFL_L.STL" />
         </geometry>
-      </collision> -->
+      </collision>
     </link>
     <joint
       name="RFL_J"
@@ -452,14 +444,11 @@
       <axis
         xyz="0 1 0" />
       <limit
-        lower="-1.5708"
-        upper="1.1"
+        lower="-1.8708"
+        upper="1.4"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="RFC_L">
@@ -479,11 +468,10 @@
       </inertial>
       <visual>
         <origin
-          xyz="0 -0.0425 0"
-          rpy="0 0 0" />
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/RFC_L.STL" />
+          <cylinder radius="0.001" length="0.01"/>
         </geometry>
         <material
           name="">
@@ -493,27 +481,21 @@
       </visual>
       <collision>
         <origin
-          xyz="0 -0.0425 0"
-          rpy="0 0 0" />
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/RFC_L.STL" />
+            <cylinder radius="0.001" length="0.1"/>
         </geometry>
       </collision>
     </link>
-    <joint
-      name="RFC_J"
-      type="fixed">
-      <origin
-        xyz="1.9364E-05 0 -0.085"
-        rpy="0 0 0" />
-      <parent
-        link="RFL_L" />
-      <child
-        link="RFC_L" />
-      <axis
-        xyz="0 0 0" />
+    <joint name="RFC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="RFL_L" />
+      <child link="RFC_L" />
+      <axis xyz="0 1 0" />
     </joint>
+
     <link
       name="LBS_L">
       <inertial>
@@ -571,10 +553,7 @@
         upper="1.5708"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="LBU_L">
@@ -630,13 +609,10 @@
         xyz="0 1 0" />
       <limit
         lower="0"
-        upper="1.1"
+        upper="1.4"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="LBL_L">
@@ -654,7 +630,7 @@
           iyz="1.66567501013991E-06"
           izz="2.20436639521686E-05" />
       </inertial>
-      <!-- <visual>
+      <visual>
         <origin
           xyz="0 0.0305 0"
           rpy="0 0 0" />
@@ -676,7 +652,7 @@
           <mesh
             filename="package://tinyquad_description/meshes/LBL_L.STL" />
         </geometry>
-      </collision> -->
+      </collision>
     </link>
     <joint
       name="LBL_J"
@@ -691,14 +667,11 @@
       <axis
         xyz="0 1 0" />
       <limit
-        lower="-1.5708"
-        upper="1.1"
+        lower="-1.8708"
+        upper="1.4"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="LBC_L">
@@ -719,10 +692,9 @@
       <visual>
         <origin
           xyz="0 0.0425 0"
-          rpy="0 0 0" />
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/LBC_L.STL" />
+          <cylinder radius="0.001" length="0.01"/>
         </geometry>
         <material
           name="">
@@ -733,26 +705,20 @@
       <collision>
         <origin
           xyz="0 0.0425 0"
-          rpy="0 0 0" />
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/LBC_L.STL" />
+            <cylinder radius="0.001" length="0.1"/>
         </geometry>
       </collision>
     </link>
-    <joint
-      name="LBC_J"
-      type="fixed">
-      <origin
-        xyz="2.0629E-05 0 -0.085"
-        rpy="0 0 0" />
-      <parent
-        link="LBL_L" />
-      <child
-        link="LBC_L" />
-      <axis
-        xyz="0 0 0" />
+    <joint name="LBC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="LBL_L" />
+      <child link="LBC_L" />
+      <axis xyz="0 1 0" />
     </joint>
+
     <link
       name="RBS_L">
       <inertial>
@@ -810,10 +776,7 @@
         upper="1.5708"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="RBU_L">
@@ -869,13 +832,10 @@
         xyz="0 1 0" />
       <limit
         lower="0"
-        upper="1.1"
+        upper="1.4"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="RBL_L">
@@ -893,7 +853,7 @@
           iyz="-1.66560968972197E-06"
           izz="2.20437476815741E-05" />
       </inertial>
-      <!-- <visual>
+      <visual>
         <origin
           xyz="0 -0.0305 0"
           rpy="0 0 0" />
@@ -915,7 +875,7 @@
           <mesh
             filename="package://tinyquad_description/meshes/RBL_L.STL" />
         </geometry>
-      </collision> -->
+      </collision>
     </link>
     <joint
       name="RBL_J"
@@ -930,14 +890,11 @@
       <axis
         xyz="0 1 0" />
       <limit
-        lower="-1.5708"
-        upper="1.1"
+        lower="-1.8708"
+        upper="1.4"
         effort="1.0787315"
         velocity="7.48" />
-      <!--mimic
-        joint="LFS_J"
-        multiplier="1"
-        offset="0" /-->
+
     </joint>
     <link
       name="RBC_L">
@@ -957,11 +914,10 @@
       </inertial>
       <visual>
         <origin
-          xyz="0 -0.0425 0"
-          rpy="0 0 0" />
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/RBC_L.STL" />
+          <cylinder radius="0.001" length="0.01"/>
         </geometry>
         <material
           name="">
@@ -971,29 +927,20 @@
       </visual>
       <collision>
         <origin
-          xyz="0 -0.0425 0"
-          rpy="0 0 0" />
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
         <geometry>
-          <mesh
-            filename="package://tinyquad_description/meshes/RBC_L.STL" />
+            <cylinder radius="0.001" length="0.1"/>
         </geometry>
       </collision>
     </link>
-    <joint
-      name="RBC_J"
-      type="fixed">
-      <origin
-        xyz="1.9364E-05 0 -0.085"
-        rpy="0 0 0" />
-      <parent
-        link="RBL_L" />
-      <child
-        link="RBC_L" />
-      <axis
-        xyz="0 0 0" />
+    <joint name="RBC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="RBL_L" />
+      <child link="RBC_L" />
+      <axis xyz="0 1 0" />
     </joint>
   </xacro:macro>
   
-  <!-- <xacro:tinyquad_transmissions/> -->
-
 </robot>

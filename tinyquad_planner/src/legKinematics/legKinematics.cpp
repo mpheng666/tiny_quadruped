@@ -11,6 +11,7 @@ namespace legKinematics_ns
     marker_pub(p_nh_.advertise<visualization_msgs::Marker>("visualization_target_marker", 1)),
     bezier_sub(p_nh_.subscribe<geometry_msgs::PointStamped>("bezier_points", 100, &LegKinematics::bezierCb, this)),
     joy_sub(p_nh_.subscribe<sensor_msgs::Joy>("joy", 100, &LegKinematics::joyCb, this)),
+    joy_joints(4),
     tracik_solver(chain_start, chain_end, urdf_param, timeout, eps),
     fk_solver(chain)
     {
@@ -31,12 +32,11 @@ namespace legKinematics_ns
         this->initTf();
         this->initMarker();
 
-
         if(this->checkKDLChain()) 
         {
             this->getKDLLimits();
-            this->getJointsNominal();
             this->initForwardKinematics();
+            this->getJointsNominal();
         }
 
         while(ros::ok())
@@ -129,10 +129,8 @@ namespace legKinematics_ns
 
     void LegKinematics::getJointsNominal()
     {
-        // KDL::JntArray nominal(number_of_joints);
-        KDL::JntArray nominal(4);
-        ROS_INFO("Get nominal: %li", nominal.data.size());;
-        for (size_t i = 0; i < 4; i++)
+        KDL::JntArray nominal(number_of_joints);
+        for (size_t i = 0; i < nominal.data.size(); i++)
         {
             nominal(i) = (lower_limit(i) + upper_limit(i)) / 2.0;
             ROS_INFO("nominal %li: %f \n", i, nominal(i));
@@ -235,17 +233,16 @@ namespace legKinematics_ns
         else if (msg->buttons[2] == 1)
         {
             leg_mode = Mode::bezier_mode;
-        }
-
+        } 
+ 
         if (leg_mode == Mode::cartesian_mode)
         {
-            ROS_INFO("target x: %f", target_marker.pose.position.x);
-            target_marker.pose.position.x = msg->axes[0]*scale_x + bias_x;
-            target_marker.pose.position.y = msg->axes[3]*scale_y + bias_y;
-            target_marker.pose.position.z = msg->axes[1]*scale_z + bias_z;
-            // foot_contact_frame.p.x(target_marker.pose.position.x);
-            // foot_contact_frame.p.y(target_marker.pose.position.y);
-            // foot_contact_frame.p.z(target_marker.pose.position.z);
+            target_marker.pose.position.x = msg->axes[0] * scale_x + bias_x;
+            target_marker.pose.position.y = msg->axes[3] * scale_y + bias_y;
+            target_marker.pose.position.z = msg->axes[1] * scale_z + bias_z;
+            foot_contact_frame.p.x(target_marker.pose.position.x);
+            foot_contact_frame.p.y(target_marker.pose.position.y);
+            foot_contact_frame.p.z(target_marker.pose.position.z);
             target_marker.header.stamp = ros::Time::now();
         }
         else if (leg_mode == Mode::joint_mode)
