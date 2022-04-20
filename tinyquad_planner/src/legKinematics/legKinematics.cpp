@@ -28,6 +28,7 @@ namespace legKinematics_ns
 
         init_r.sleep();
         this->loadParam();
+        this->initLegPubs();
         this->createLeg();
         this->initTf();
         this->initMarker();
@@ -53,6 +54,17 @@ namespace legKinematics_ns
 
     }
 
+    void LegKinematics::initLegPubs()
+    {
+        legPubs = std::vector<ros::Publisher>(4);
+
+        for(int i=0; i < legPubs.size(); ++i)
+        {
+            legPubs.at(i) = p_nh_.advertise<std_msgs::Float64>
+            (robot_namespace + joint_name.at(i) + "_position_controller/command", 10);
+        }
+    }
+
     void LegKinematics::initTf()
     {
         transformStamped.header.stamp = ros::Time::now();
@@ -73,7 +85,7 @@ namespace legKinematics_ns
 
     void LegKinematics::initMarker()
     {
-        target_marker.header.frame_id = "foot_contact_frame";
+        target_marker.header.frame_id = "foot_contact_marker";
         target_marker.header.stamp = ros::Time::now();
 
         target_marker.ns = "foot";
@@ -133,7 +145,7 @@ namespace legKinematics_ns
         for (size_t i = 0; i < nominal.data.size(); i++)
         {
             nominal(i) = (lower_limit(i) + upper_limit(i)) / 2.0;
-            ROS_INFO("nominal %li: %f \n", i, nominal(i));
+            ROS_DEBUG("nominal %li: %f \n", i, nominal(i));
         }
         curr_joint_array = nominal;
     }
@@ -145,24 +157,33 @@ namespace legKinematics_ns
         y = f.p.y();
         z = f.p.z();
         f.M.GetRPY(roll, pitch, yaw);
-        std::cout << "x:" << x << " y:" << y << " z:" << z << " roll:" << roll << " pitch:" << pitch << " yaw:" << yaw << std::endl;
+        ROS_INFO_STREAM(" x:" << x << 
+                        " y:" << y << 
+                        " z:" << z << 
+                        " roll:" << roll << 
+                        " pitch:" << pitch << 
+                        " yaw:" << yaw << "\n");
     };
 
     void LegKinematics::inverseKinematics()
     {
+        std_msgs::Float64 joint_msg;
+
         joint_state.header.stamp = ros::Time::now();
         int rc = tracik_solver.CartToJnt(curr_joint_array, foot_contact_frame, ik_result);
-        ROS_INFO("ik result status: %i", rc);
+        ROS_DEBUG("ik result status: %i", rc);
         joint_state.name.resize(number_of_joints);
         joint_state.position.resize(number_of_joints);
 
         marker_pub.publish(target_marker);
-        ROS_INFO("Number of joints: %i", number_of_joints);
+        // ROS_DEBUG("Number of joints: %i", number_of_joints);
         for (size_t i = 0; i < number_of_joints; i++)
         {
-            ROS_INFO("ik_result: %f", double(ik_result(i)));
-            joint_state.name[i] = joint_name[i];
+            ROS_INFO("ik_result %li  : %f", i, double(ik_result(i)));
+            joint_state.name[i] = robot_namespace + joint_name[i];
             joint_state.position[i] = curr_joint_array.data[i] = ik_result(i);
+            joint_msg.data = joint_state.position[i];
+            legPubs.at(i).publish(joint_msg);
         }
         print_frame_lambda(foot_contact_frame);
     }
@@ -171,19 +192,23 @@ namespace legKinematics_ns
     {
         KDL::ChainFkSolverPos_recursive fk_solver(chain);
         number_of_joints = chain.getNrOfJoints();
-        ROS_INFO("joints number: %d", number_of_joints);
+        ROS_DEBUG("joints number: %d", number_of_joints);
     }
 
     void LegKinematics::forwardKinematics()
     {
+        std_msgs::Float64 joint_msg;
+
         joint_state.header.stamp = ros::Time::now();
         fk_solver.JntToCart(joy_joints, foot_contact_frame);
         joint_state.name.resize(number_of_joints);
         joint_state.position.resize(number_of_joints);
         for (size_t i = 0; i < number_of_joints; i++)
         {
-            joint_state.name[i] = joint_name[i];
+            joint_state.name[i] = robot_namespace + joint_name[i];
             joint_state.position[i] = joy_joints(i);
+            joint_msg.data = joint_state.position[i];
+            legPubs.at(i).publish(joint_msg);
         }   
         print_frame_lambda(foot_contact_frame);
     }
@@ -194,14 +219,14 @@ namespace legKinematics_ns
         {
         case Mode::cartesian_mode:
             {
-                ROS_INFO("IK mode");
+                // ROS_DEBUG("IK mode");
                 inverseKinematics();
                 break;
             }
 
         case Mode::joint_mode:
             {
-                ROS_INFO("FK mode");
+                // ROS_DEBUG("FK mode");
                 forwardKinematics();
                 break;
             }

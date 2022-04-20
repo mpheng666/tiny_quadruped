@@ -17,6 +17,8 @@
 #include "urdf/model.h"
 #include "visualization_msgs/Marker.h"
 
+#include "std_msgs/Float64.h"
+
 namespace legKinematics_ns
 {
     enum class Mode
@@ -40,6 +42,7 @@ namespace legKinematics_ns
         ros::Publisher marker_pub;
         ros::Subscriber bezier_sub;
         ros::Subscriber joy_sub;
+        std::vector<ros::Publisher> legPubs;
 
         const double LOOP_RATE {100.0f};
 
@@ -100,7 +103,11 @@ namespace legKinematics_ns
         KDL::JntArray ik_result;
         KDL::ChainFkSolverPos_recursive fk_solver;
 
+        const std::string robot_namespace {"tinyquad/"};
+
+
         void loadParam();
+        void initLegPubs();
         void initTf();
         void initMarker();
         void createLeg();

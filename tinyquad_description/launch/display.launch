@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
 
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find tinyquad_description)/urdf/tinyquad.urdf.xacro" />

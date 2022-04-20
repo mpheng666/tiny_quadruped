@@ -1,14 +1,5 @@
+<?xml version="1.0"?>
 <launch>
-
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find tinyquad_description)/urdf/tinyquad.urdf.xacro" />
-
-    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
-
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tinyquad_description)/rviz/tinyquad.rviz" />
-    
-    <!-- <include file="$(find tinyquad_description)/launch/gazebo_fake_controll.launch" /> -->
 
     <node name="leg_kinematics_node" pkg="tinyquad_planner" type="leg_kinematics_node" output="screen"/>
     

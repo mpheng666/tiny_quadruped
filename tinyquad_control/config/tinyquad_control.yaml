@@ -1,58 +1,128 @@
 tinyquad:
+  # # Setting for ros_control control loop
+  # hardware_interface:
+  #  joints:
+  #     - LFS_J
+  #     - LFU_J
+  #     - LFL_J
+  #     - RFS_J
+  #     - RFU_J
+  #     - RFL_J
+  #     - LBS_J
+  #     - LBU_J
+  #     - LBL_J
+  #     - RBS_J
+  #     - RBU_J
+  #     - RBL_J
+  #  sim_control_mode: 0 # 0: position, 1: velocity
+
   # Publish all joint states -----------------------------------
   joint_state_controller:
     type: joint_state_controller/JointStateController
     publish_rate: 50  
 
-  # Position Controllers ---------------------------------------
-  joint1_position_controller:
+  # Individual effort position Controllers ---------------------------------------
+  LFS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LFS_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint2_position_controller:
+  LFU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LFU_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint3_position_controller:
+  LFL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LFL_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
 
-  joint4_position_controller:
+  RFS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RFS_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint5_position_controller:
+  RFU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RFU_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint6_position_controller:
+  RFL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RFL_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
 
-  joint7_position_controller:
+  LBS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LBS_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint8_position_controller:
+  LBU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LBU_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint9_position_controller:
+  LBL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LBL_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
 
-  joint10_position_controller:
+  RBS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RBS_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint11_position_controller:
+  RBU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RBU_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
-  joint12_position_controller:
+  RBL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RBL_J
     pid: {p: 110.0, i: 0.01, d: 0.0}
+
+# # Group Position Controllers ---------------------------------------
+# # Allows to send single ROS msg of Float64MultiArray to all joints
+# joint_position_controller:
+#    type: position_controllers/JointGroupPositionController
+#    joints:
+#       - LFS_J
+#       - LFU_J
+#       - LFL_J
+#       - RFS_J
+#       - RFU_J
+#       - RFL_J
+#       - LBS_J
+#       - LBU_J
+#       - LBL_J
+#       - RBS_J
+#       - RBU_J
+#       - RBL_J
+
+# # Joint Trajectory Controller -------------------------------
+# # For detailed explanations of parameter see http://wiki.ros.org/joint_trajectory_controller
+# position_trajectory_controller:
+#    type: position_controllers/JointTrajectoryController
+#    # These joints can likely just be copied from the hardware_interface list above
+#    joints:
+#       - LFS_J
+#       - LFU_J
+#       - LFL_J
+#       - RFS_J
+#       - RFU_J
+#       - RFL_J
+#       - LBS_J
+#       - LBU_J
+#       - LBL_J
+#       - RBS_J
+#       - RBU_J
+#       - RBL_J
+#    constraints:
+#       goal_time: 5.0
+#       #stopped_position_tolerance: 0.4 # Defaults to 0.01
+#       front_right_roll_joint:
+#           trajectory: 0.60
+#           goal:       0.15
+#       front_right_pitch_joint:
+#           trajectory: 0.60
+#           goal:       0.15
+#    # gains:
+#    #     joint1: {p: 2.0,  i: 0.0, d: 0.01, i_clamp: 1}
+#    #     joint2: {p: 2.0,  i: 0.0, d: 0.01, i_clamp: 1}
+
+#     # state_publish_rate:  50 # Defaults to 50
+#     # action_monitor_rate: 20 # Defaults to 20
+#     #hold_trajectory_duration: 0 # Defaults to 0.5
