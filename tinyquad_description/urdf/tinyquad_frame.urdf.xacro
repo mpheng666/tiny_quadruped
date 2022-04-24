@@ -330,7 +330,6 @@
         upper="1.5708"
         effort="1.0787315"
         velocity="7.48" />
-
     </joint>
     <link
       name="RFU_L">

@@ -3,6 +3,7 @@
 
   <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_frame.urdf.xacro" />
   <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_transmission.xacro" />
+  <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_sensors.urdf.xacro" />
 
   <xacro:tinyquad />
 
@@ -26,6 +27,27 @@
       <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
         <robotNamespace>/tinyquad</robotNamespace>
       </plugin>
+  </gazebo>
+
+  <gazebo reference="imu_link">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>/tinyquad/imu</topicName>
+        <bodyName>imu_link</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
   </gazebo>
 
 </robot>

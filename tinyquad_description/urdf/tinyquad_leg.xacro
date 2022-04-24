@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <xacro:macro name="leg" params="pose_prefix x_mirror y_mirror x_offset">
+    <link name="${pose_prefix}S_L">
+        <inertial>
+        <origin
+            xyz="-0.046748 ${y_mirror}*-0.00092972 6.6559E-07"
+            rpy="0 0 0" />
+        <mass
+            value="0.057684" />
+        <inertia
+            ixx="9.7817E-06"
+            ixy="${y_mirror}*${x_mirror}*5.1255E-07"
+            ixz="1.4506E-10"
+            iyy="1.4627E-05"
+            iyz="${y_mirror}*-7.3251E-10"
+            izz="1.8457E-05" />
+        </inertial>
+        <visual>
+        <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+        <geometry>
+            <mesh
+            filename="package://tinyquad_description/meshes/${pose_prefix}S_L.STL" />
+        </geometry>
+        <material
+            name="">
+            <color
+            rgba="1 1 1 1" />
+        </material>
+        </visual>
+        <collision>
+        <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+        <geometry>
+            <mesh
+            filename="package://tinyquad_description/meshes/${pose_prefix}S_L.STL" />
+        </geometry>
+        </collision>
+    </link>
+    <joint
+        name="${pose_prefix}S_J"
+        type="revolute">
+        <origin
+        xyz="0.15711-${x_offset} ${y_mirror}*0.050443 0"
+        rpy="0 0 0" />
+        <parent
+        link="base_link" />
+        <child
+        link="${pose_prefix}S_L" />
+        <axis
+        xyz="1 0 0" />
+        <limit
+        lower="0"
+        upper="1.5708"
+        effort="1.0787315"
+        velocity="7.48" />
+    </joint>
+    <link
+        name="${pose_prefix}U_L">
+        <inertial>
+        <origin
+            xyz="0.00956780740114901 ${y_mirror}*-0.00266058763780398 -0.0619406808382107"
+            rpy="0 0 0" />
+        <mass
+            value="0.0633248586799827" />
+        <inertia
+            ixx="4.22733905580439E-05"
+            ixy="${y_mirror}*${x_mirror}*-3.31314885518861E-08"
+            ixz="-4.35470998953999E-06"
+            iyy="3.42993494529219E-05"
+            iyz="${y_mirror}*4.30780434477683E-06"
+            izz="2.75949415936944E-05" />
+        </inertial>
+        <visual>
+        <origin
+            xyz="0 ${y_mirror}*0.01375 0"
+            rpy="0 0 0" />
+        <geometry>
+            <mesh
+            filename="package://tinyquad_description/meshes/${pose_prefix}U_L.STL" />
+        </geometry>
+        <material
+            name="">
+            <color
+            rgba="1 1 1 1" />
+        </material>
+        </visual>
+        <collision>
+        <origin
+            xyz="0 ${y_mirror}*0.01375 0"
+            rpy="0 0 0" />
+        <geometry>
+            <mesh
+            filename="package://tinyquad_description/meshes/${pose_prefix}U_L.STL" />
+        </geometry>
+        </collision>
+    </link>
+
+    <joint
+        name="${pose_prefix}U_J"
+        type="revolute">
+        <origin
+        xyz="-0.037107 0 0"
+        rpy="0 0 0" />
+        <parent
+        link="${pose_prefix}S_L" />
+        <child
+        link="${pose_prefix}U_L" />
+        <axis
+        xyz="0 1 0" />
+        <limit
+        lower="0"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+    </joint>
+
+    <link
+        name="${pose_prefix}L_L">
+        <inertial>
+        <origin
+            xyz="-0.0126991843001295 ${y_mirror}*-0.0150723539446907 -0.0467923508835542"
+            rpy="0 0 0" />
+        <mass
+            value="0.0247326277403109" />
+        <inertia
+            ixx="4.21435291889056E-05"
+            ixy="${y_mirror}*${x_mirror}*4.52141590599905E-07"
+            ixz="${x_mirror}*2.40966499667341E-06"
+            iyy="2.82129703259535E-05"
+            iyz="${y_mirror}*1.66567501013991E-06"
+            izz="2.20436639521685E-05" />
+        </inertial>
+        <visual>
+        <origin
+            xyz="0 ${y_mirror}*0.0305 0"
+            rpy="0 0 0" />
+        <geometry>
+            <mesh
+            filename="package://tinyquad_description/meshes/${pose_prefix}L_L.STL" />
+        </geometry>
+        <material
+            name="">
+            <color
+            rgba="1 1 1 1" />
+        </material>
+        </visual>
+        <collision>
+        <origin
+            xyz="0 ${y_mirror}*0.0305 0"
+            rpy="0 0 0" />
+        <geometry>
+            <mesh
+            filename="package://tinyquad_description/meshes/${pose_prefix}L_L.STL" />
+        </geometry>
+        </collision>
+    </link>
+    <joint
+        name="${pose_prefix}L_J"
+        type="revolute">
+        <origin
+        xyz="0 0 -0.078388"
+        rpy="0 0 0" />
+        <parent
+        link="${pose_prefix}U_L" />
+        <child
+        link="${pose_prefix}L_L" />
+        <axis
+        xyz="0 1 0" />
+        <limit
+        lower="-1.8708"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+    </joint>
+    <link
+        name="${pose_prefix}C_L">
+        <inertial>
+        <origin
+            xyz="-0.0137408449020781 ${y_mirror}*-0.0295642372944374 0.0344451912255238"
+            rpy="0 0 0" />
+        <mass
+            value="0.0228920746333247" />
+        <inertia
+            ixx="4.20984399971498E-05"
+            ixy="${y_mirror}*${x_mirror}*4.52141590599904E-07"
+            ixz="${x_mirror}*2.40966499667341E-06"
+            iyy="2.81277626908271E-05"
+            iyz="${y_mirror}*1.66567501013991E-06"
+            izz="2.19985747604127E-05" />
+        </inertial>
+        <visual>
+        <origin
+            xyz="0 0.0425 0"
+            rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder radius="0.001" length="0.01"/>
+        </geometry>
+        <material
+            name="">
+            <color
+            rgba="1 1 1 1" />
+        </material>
+        </visual>
+        <collision>
+        <origin
+            xyz="0 0.0425 0"
+            rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder radius="0.001" length="0.1"/>
+        </geometry>
+        </collision>
+    </link>
+    <joint name="${pose_prefix}C_J" type="revolute">
+        <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+        <limit lower="-3.141592"
+               upper="3.141592"
+               effort="1.0787315"
+               velocity="7.48" />
+        <parent link="${pose_prefix}L_L" />
+        <child link="${pose_prefix}C_L" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+  </xacro:macro>
+
+</robot>
