@@ -264,6 +264,7 @@
             <cylinder radius="0.001" length="0.1"/>
         </geometry>
       </collision>
+    
     </link>
     <joint name="LFC_J" type="revolute">
       <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />

@@ -4,6 +4,7 @@
   <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_frame.urdf.xacro" />
   <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_transmission.xacro" />
   <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_sensors.urdf.xacro" />
+  <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_wheel.xacro" />
 
   <xacro:tinyquad />
 
@@ -22,6 +23,14 @@
   <xacro:tinyquad_transmission name="RBS"/>
   <xacro:tinyquad_transmission name="RBU"/>
   <xacro:tinyquad_transmission name="RBL"/>
+
+  <xacro:tinyquad_wheel pose_prefix="LB" y_mirror="1"/>
+  <xacro:tinyquad_wheel pose_prefix="RB" y_mirror="-1"/>
+  <!-- <xacro:tinyquad_wheel pose_prefix="LB" y_mirror="1"/>
+  <xacro:tinyquad_wheel pose_prefix="RB" y_mirror="-1"/> -->
+
+  <xacro:tinyquad_wheel_transmission name="LB"/> 
+  <xacro:tinyquad_wheel_transmission name="RB"/> 
 
   <gazebo>
       <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">

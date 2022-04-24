@@ -6,11 +6,12 @@ namespace legKinematics_ns
     prefix(prefix),
     x_mirror(x_mirror),
     y_mirror(y_mirror),
-    // spinner(4),
     joint_pub(p_nh_.advertise<sensor_msgs::JointState>("joint_states", 1)),
     marker_pub(p_nh_.advertise<visualization_msgs::Marker>("visualization_target_marker", 1)),
+    cmd_vel_pub(p_nh_.advertise<geometry_msgs::Twist>("/tinyquad/wheels_controller/cmd_vel", 1)),
     bezier_sub(p_nh_.subscribe<geometry_msgs::PointStamped>("bezier_points", 100, &LegKinematics::bezierCb, this)),
     joy_sub(p_nh_.subscribe<sensor_msgs::Joy>("joy", 100, &LegKinematics::joyCb, this)),
+    imu_sub(p_nh_.subscribe<sensor_msgs::Imu>("/tinyquad/imu", 100, &LegKinematics::imuCb, this)),
     joy_joints(4),
     tracik_solver(chain_start, chain_end, urdf_param, timeout, eps),
     fk_solver(chain)
@@ -237,6 +238,24 @@ namespace legKinematics_ns
             }
             break;
 
+        case Mode::wheel_mode:
+            {
+                ROS_INFO("wheel mode");
+
+                // std_msgs::Float64 joint_msg_S;
+                // std_msgs::Float64 joint_msg_U;
+                // std_msgs::Float64 joint_msg_L;
+
+                // joint_msg_S.data = 0.0f;
+                // joint_msg_U.data = 1.4f;
+                // joint_msg_L.data = 0.7f;
+                
+                // legPubs.at(0).publish(joint_msg_S);
+                // legPubs.at(1).publish(joint_msg_U);
+                // legPubs.at(2).publish(joint_msg_L);
+            }
+            break;
+
         default:
             {
                 ROS_INFO("default fsm");
@@ -259,6 +278,10 @@ namespace legKinematics_ns
         {
             leg_mode = Mode::bezier_mode;
         } 
+        else if (msg->buttons[3] == 1)
+        {
+            leg_mode = Mode::wheel_mode;
+        } 
  
         if (leg_mode == Mode::cartesian_mode)
         {
@@ -277,11 +300,22 @@ namespace legKinematics_ns
             joy_joints(2) = msg->axes[2];
             joy_joints(3) = msg->axes[3];
         }
+        else if (leg_mode == Mode::wheel_mode)
+        {
+            cmd_vel_msg.linear.x = msg->axes[1];
+            cmd_vel_msg.angular.z = msg->axes[2];
+            cmd_vel_pub.publish(cmd_vel_msg);
+        }
     }
 
     void LegKinematics::bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg)
     {
 
+    }
+
+    void LegKinematics::imuCb(const sensor_msgs::ImuConstPtr& msg)
+    {
+        
     }
 
 } // ns legKinematics_ns

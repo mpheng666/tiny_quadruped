@@ -13,4 +13,17 @@
     </transmission>
   </xacro:macro>
 
+  <xacro:macro name="tinyquad_wheel_transmission" params="name">
+    <transmission name="${name}_wheel_control">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${name}_wheel_joint">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${name}_wheel_motor">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+
 </robot>

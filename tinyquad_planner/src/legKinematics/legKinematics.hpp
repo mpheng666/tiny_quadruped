@@ -18,6 +18,8 @@
 #include "visualization_msgs/Marker.h"
 
 #include "std_msgs/Float64.h"
+#include "geometry_msgs/Twist.h"
+#include "sensor_msgs/Imu.h"
 
 namespace legKinematics_ns
 {
@@ -25,7 +27,8 @@ namespace legKinematics_ns
     {
         cartesian_mode,
         joint_mode,
-        bezier_mode
+        bezier_mode,
+        wheel_mode
     };
 
     class LegKinematics
@@ -40,8 +43,10 @@ namespace legKinematics_ns
         // ros::AsyncSpinner spinner;
         ros::Publisher joint_pub;
         ros::Publisher marker_pub;
+        ros::Publisher cmd_vel_pub;
         ros::Subscriber bezier_sub;
         ros::Subscriber joy_sub;
+        ros::Subscriber imu_sub;
         std::vector<ros::Publisher> legPubs;
 
         const double LOOP_RATE {100.0f};
@@ -105,6 +110,7 @@ namespace legKinematics_ns
 
         const std::string robot_namespace {"tinyquad/"};
 
+        geometry_msgs::Twist cmd_vel_msg;
 
         void loadParam();
         void initLegPubs();
@@ -121,6 +127,7 @@ namespace legKinematics_ns
         // void pathSegmentation();
         void joyCb(const sensor_msgs::Joy::ConstPtr& msg);
         void bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg);
+        void imuCb(const sensor_msgs::ImuConstPtr& msg);
 
         Mode leg_mode {Mode::cartesian_mode};
 
