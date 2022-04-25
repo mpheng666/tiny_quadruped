@@ -49,6 +49,16 @@ namespace legKinematics_ns
         ros::Subscriber imu_sub;
         std::vector<ros::Publisher> legPubs;
 
+        ros::Publisher LBU_J_pub;
+        ros::Publisher LBL_J_pub;
+        ros::Publisher RBU_J_pub;
+        ros::Publisher RBL_J_pub;
+        
+        ros::Publisher LFU_J_pub;
+        ros::Publisher LFL_J_pub;
+        ros::Publisher RFU_J_pub;
+        ros::Publisher RFL_J_pub;
+
         const double LOOP_RATE {100.0f};
 
         KDL::JntArray joy_joints;
@@ -129,7 +139,8 @@ namespace legKinematics_ns
         void bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg);
         void imuCb(const sensor_msgs::ImuConstPtr& msg);
 
-        Mode leg_mode {Mode::cartesian_mode};
+        // Mode leg_mode {Mode::cartesian_mode};
+        Mode leg_mode {Mode::wheel_mode};
 
     };
 } // ns legKinematics_ns

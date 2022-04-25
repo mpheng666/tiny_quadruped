@@ -16,7 +16,13 @@
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" 
     args="-param robot_description 
           -urdf 
-          -model tinyquad"
+          -model tinyquad
+          -x 0
+          -y 0
+          -z 0.4
+          -R 1.57
+          -P 0
+          -Y 0"
     output="screen" />
 
 </launch>

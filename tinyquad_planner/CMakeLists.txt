@@ -44,3 +44,6 @@ target_link_libraries(bezier_node ${catkin_LIBRARIES})
 
 add_executable(leg_kinematics_node src/legKinematics/legKinematics.cpp src/legKinematics_node.cpp)
 target_link_libraries(leg_kinematics_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
+
+add_executable(body_kinematics_node src/body_kinematics/BodyKinematics.cpp src/BodyKinematics_node.cpp)
+target_link_libraries(body_kinematics_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="display" default="false" />
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+</include>
+
+  
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find tinyquad_description)/urdf/tinyquad.urdf.xacro" />
+  
+  <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> -->
+  
+  <node name="rviz" pkg="rviz" type="rviz" 
+  args="-d $(find tinyquad_description)/rviz/tinyquad.rviz" 
+  if="$(arg display)"/>
+  
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" 
+  args="-param robot_description 
+  -urdf 
+  -model tinyquad
+  -x 0
+  -y 0
+  -z 0.4
+  -R 0
+  -P -1.57
+  -Y 0 "
+  output="screen" />
+
+<!-- <include file="$(find tinyquad_control)/launch/tinyquad_control.launch" /> -->
+<!-- <include file="$(find tinyquad_planner)/launch/start.launch" /> -->
+  
+</launch>

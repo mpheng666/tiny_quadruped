@@ -14,7 +14,15 @@ namespace legKinematics_ns
     imu_sub(p_nh_.subscribe<sensor_msgs::Imu>("/tinyquad/imu", 100, &LegKinematics::imuCb, this)),
     joy_joints(4),
     tracik_solver(chain_start, chain_end, urdf_param, timeout, eps),
-    fk_solver(chain)
+    fk_solver(chain),
+    LBU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LBU_J_position_controller/command", 1)),
+    LBL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LBL_J_position_controller/command", 1)),
+    RBU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RBU_J_position_controller/command", 1)),
+    RBL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RBL_J_position_controller/command", 1)),
+    LFU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LFU_J_position_controller/command", 1)),
+    LFL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LFL_J_position_controller/command", 1)),
+    RFU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RFU_J_position_controller/command", 1)),
+    RFL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RFL_J_position_controller/command", 1))
     {
 
     }
@@ -27,7 +35,7 @@ namespace legKinematics_ns
         ros::Rate r(LOOP_RATE);
         ros::Rate init_r(0.5);
 
-        init_r.sleep();
+        // init_r.sleep();
         this->loadParam();
         this->initLegPubs();
         this->createLeg();
@@ -242,17 +250,35 @@ namespace legKinematics_ns
             {
                 ROS_INFO("wheel mode");
 
-                // std_msgs::Float64 joint_msg_S;
-                // std_msgs::Float64 joint_msg_U;
-                // std_msgs::Float64 joint_msg_L;
+                std_msgs::Float64 LBU_J_msg;
+                std_msgs::Float64 LBL_J_msg;
+                std_msgs::Float64 RBU_J_msg;
+                std_msgs::Float64 RBL_J_msg;
 
-                // joint_msg_S.data = 0.0f;
-                // joint_msg_U.data = 1.4f;
-                // joint_msg_L.data = 0.7f;
-                
-                // legPubs.at(0).publish(joint_msg_S);
-                // legPubs.at(1).publish(joint_msg_U);
-                // legPubs.at(2).publish(joint_msg_L);
+                LBU_J_msg.data = 1.4f;
+                LBL_J_msg.data = 0.0f;
+                RBU_J_msg.data = 1.4f;
+                RBL_J_msg.data = 0.0f;
+
+                LBU_J_pub.publish(LBU_J_msg);                
+                LBL_J_pub.publish(LBL_J_msg);                
+                RBU_J_pub.publish(RBU_J_msg);                
+                RBL_J_pub.publish(RBL_J_msg);    
+
+                std_msgs::Float64 LFU_J_msg;
+                std_msgs::Float64 LFL_J_msg;
+                std_msgs::Float64 RFU_J_msg;
+                std_msgs::Float64 RFL_J_msg;
+
+                LFU_J_msg.data = 1.4f;
+                LFL_J_msg.data = 0.0f;
+                RFU_J_msg.data = 1.4f;
+                RFL_J_msg.data = 0.0f;
+
+                LFU_J_pub.publish(LFU_J_msg);                
+                LFL_J_pub.publish(LFL_J_msg);                
+                RFU_J_pub.publish(RFU_J_msg);                
+                RFL_J_pub.publish(RFL_J_msg);          
             }
             break;
 
@@ -302,9 +328,39 @@ namespace legKinematics_ns
         }
         else if (leg_mode == Mode::wheel_mode)
         {
-            cmd_vel_msg.linear.x = msg->axes[1];
+            cmd_vel_msg.linear.x = msg->axes[1]*10.0;
             cmd_vel_msg.angular.z = msg->axes[2];
             cmd_vel_pub.publish(cmd_vel_msg);
+
+            if(msg->buttons[5] == 1)
+            {
+                // std_msgs::Float64 LFU_J_msg;
+                // std_msgs::Float64 LFL_J_msg;
+                // std_msgs::Float64 RFU_J_msg;
+                // std_msgs::Float64 RFL_J_msg;
+
+                // LFU_J_msg.data = 1.4f;
+                // LFL_J_msg.data = -1.8f;
+                // RFU_J_msg.data = 1.4f;
+                // RFL_J_msg.data = -1.8f;
+
+                // LFU_J_pub.publish(LFU_J_msg);                
+                // LFL_J_pub.publish(LFL_J_msg);                
+                // RFU_J_pub.publish(RFU_J_msg);                
+                // RFL_J_pub.publish(RFL_J_msg);    
+
+                // LFU_J_msg.data = 0.0f;
+                // LFL_J_msg.data = 0.0f;
+                // RFU_J_msg.data = 0.0f;
+                // RFL_J_msg.data = 0.0f;
+
+                // LFU_J_pub.publish(LFU_J_msg);                
+                // LFL_J_pub.publish(LFL_J_msg);                
+                // RFU_J_pub.publish(RFU_J_msg);                
+                // RFL_J_pub.publish(RFL_J_msg);  
+
+
+            }
         }
     }
 
