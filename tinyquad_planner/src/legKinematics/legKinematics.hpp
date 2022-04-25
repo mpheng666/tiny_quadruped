@@ -59,7 +59,7 @@ namespace legKinematics_ns
         ros::Publisher RFU_J_pub;
         ros::Publisher RFL_J_pub;
 
-        const double LOOP_RATE {100.0f};
+        const double LOOP_RATE {20.0f};
 
         KDL::JntArray joy_joints;
         KDL::Frame foot_contact_frame;

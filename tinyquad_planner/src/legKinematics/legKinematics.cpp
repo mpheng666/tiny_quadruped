@@ -168,10 +168,12 @@ namespace legKinematics_ns
         f.M.GetRPY(roll, pitch, yaw);
         ROS_INFO_STREAM(" x:" << x << 
                         " y:" << y << 
-                        " z:" << z << 
-                        " roll:" << roll << 
+                        " z:" << z <<
+                        "\n");
+        ROS_INFO_STREAM(" roll:" << roll << 
                         " pitch:" << pitch << 
-                        " yaw:" << yaw << "\n");
+                        " yaw:" << yaw << 
+                        "\n");
     };
 
     void LegKinematics::inverseKinematics()
@@ -180,7 +182,7 @@ namespace legKinematics_ns
 
         joint_state.header.stamp = ros::Time::now();
         int rc = tracik_solver.CartToJnt(curr_joint_array, foot_contact_frame, ik_result);
-        ROS_DEBUG("ik result status: %i", rc);
+        ROS_INFO("ik result status: %i", rc);
         joint_state.name.resize(number_of_joints);
         joint_state.position.resize(number_of_joints);
 

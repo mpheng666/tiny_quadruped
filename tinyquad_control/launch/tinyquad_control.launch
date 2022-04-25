@@ -20,7 +20,8 @@
             RBU_J_position_controller
             RBL_J_position_controller
             joint_state_controller
-            wheels_controller"/>
+            "/>
+            <!-- wheels_controller -->
             <!-- joint_group_controller -->
   
     <!-- convert joint states to TF transforms for rviz, etc -->
