@@ -47,3 +47,6 @@ target_link_libraries(leg_kinematics_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRA
 
 add_executable(body_kinematics_node src/body_kinematics/BodyKinematics.cpp src/BodyKinematics_node.cpp)
 target_link_libraries(body_kinematics_node ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
+
+add_executable(kinematics_test_node src/leg_kinematics_test/leg_kinemtics_test.cpp)
+target_link_libraries(kinematics_test_node ${catkin_LIBRARIES})

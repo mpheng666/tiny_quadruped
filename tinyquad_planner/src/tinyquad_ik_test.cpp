@@ -69,6 +69,11 @@ void joyCb(const sensor_msgs::Joy::ConstPtr& msg)
         marker.pose.position.x = msg->axes[0]*scale_x + bias_x;
         marker.pose.position.y = msg->axes[3]*scale_y + bias_y;
         marker.pose.position.z = msg->axes[1]*scale_z + bias_z;
+        
+        // marker.pose.position.x = msg->axes[0]*scale_x;
+        // marker.pose.position.y = msg->axes[3]*scale_y;
+        // marker.pose.position.z = msg->axes[1]*scale_z;
+        
         leg_contact_frame.p.x(marker.pose.position.x);
         leg_contact_frame.p.y(marker.pose.position.y);
         leg_contact_frame.p.z(marker.pose.position.z);
@@ -80,19 +85,6 @@ void joyCb(const sensor_msgs::Joy::ConstPtr& msg)
         joy_joints(1) = msg->axes[1];
         joy_joints(2) = msg->axes[2];
         joy_joints(3) = msg->axes[3];
-    }
-    if (leg_mode == Mode::cartesian_mode)
-    {
-        marker.pose.position.x = msg->axes[0]*scale_x + bias_x;
-        marker.pose.position.y = msg->axes[3]*scale_y + bias_y;
-        marker.pose.position.z = msg->axes[1]*scale_z + bias_z;
-        x_end = marker.pose.position.x;
-        y_end = marker.pose.position.y;
-        z_end = marker.pose.position.z;
-        // leg_contact_frame.p.x(marker.pose.position.x);
-        // leg_contact_frame.p.y(marker.pose.position.y);
-        // leg_contact_frame.p.z(marker.pose.position.z);
-        marker.header.stamp = ros::Time::now();
     }
 }
 
@@ -154,7 +146,7 @@ int main(int argc, char **argv)
     //                                        "RFS_J", "RFU_J", "RFL_J",
     //                                        "LBS_J", "LBU_J", "LBL_J",
     //                                        "RBS_J", "RBU_J", "RBL_J"};
-    std::vector<std::string> joint_name = {"LFS_J", "LFU_J", "LFL_J", "LFC_J"};
+    std::vector<std::string> joint_name = {"LFS_J", "LFU_J", "LFL_J", "LFC_J", "LFC2_J"};
     sensor_msgs::JointState joint_state;
     sensor_msgs::JointState curr_joint_state;
     sensor_msgs::JointState prev_joint_state;
@@ -165,7 +157,8 @@ int main(int argc, char **argv)
     double eps = 1e-5;
     std::string chain_start = "base_link";
     // std::string chain_start = "LFS_L";
-    std::string chain_end = "LFC_L";
+    // std::string chain_end = "LFC_L";
+    std::string chain_end = "LFC2_L";
     TRAC_IK::TRAC_IK tracik_solver(chain_start, chain_end, urdf_param, timeout, eps);
 
     // get KDL chain

@@ -59,7 +59,7 @@ namespace legKinematics_ns
         ros::Publisher RFU_J_pub;
         ros::Publisher RFL_J_pub;
 
-        const double LOOP_RATE {20.0f};
+        const double LOOP_RATE {100.0f};
 
         KDL::JntArray joy_joints;
         KDL::Frame foot_contact_frame;
@@ -72,7 +72,7 @@ namespace legKinematics_ns
         double timeout {0.005f};
         double eps {1e-5f};
         const std::string chain_start {"base_link"};
-        const std::string chain_end {prefix + "C_L"};
+        const std::string chain_end {prefix + "C2_L"};
         TRAC_IK::TRAC_IK tracik_solver;
 
         std::vector<std::string> joint_name
@@ -80,7 +80,8 @@ namespace legKinematics_ns
             prefix + "S_J", 
             prefix + "U_J", 
             prefix + "L_J", 
-            prefix + "C_J"
+            prefix + "C_J",
+            prefix + "C2_J"
         };
 
         const double bias_x_nominal {-0.01f};
@@ -111,7 +112,7 @@ namespace legKinematics_ns
         KDL::Chain chain;
         KDL::JntArray lower_limit, upper_limit;
 
-        uint number_of_joints {4};
+        uint number_of_joints {5};
 
         KDL::JntArray curr_joint_array;
 
@@ -139,8 +140,8 @@ namespace legKinematics_ns
         void bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg);
         void imuCb(const sensor_msgs::ImuConstPtr& msg);
 
-        // Mode leg_mode {Mode::cartesian_mode};
-        Mode leg_mode {Mode::wheel_mode};
+        Mode leg_mode {Mode::cartesian_mode};
+        // Mode leg_mode {Mode::wheel_mode};
 
     };
 } // ns legKinematics_ns

@@ -1,6 +1,7 @@
 // ros lib
-// #include "ros/ros.h"
-// #include "geometry_msgs/PoseStamped.h"
+#include "ros/ros.h"
+#include "geometry_msgs/PoseStamped.h"
+#include "kdl_parser/kdl_parser.hpp"
 
 // standard lib
 #include <iostream>
@@ -8,12 +9,30 @@
 #include <math.h>
 #include <vector>
 
+// MACROS
+#define SHOW(a) std::cout << #a << ": " << (a) << std::endl
+
 inline double radtodeg(double rad) {return rad*180.0/M_PI;}
 inline double degtorad(double deg) {return deg/180.0*M_PI;}
 
+KDL::Tree robot_tree;
+std::string robot_desc_string;
+
 int main(int argc, char **argv)
 {
-    // ros::init(argc, argv, "urdf_parser_node");
+    ros::init(argc, argv, "kinematics_test_node");
+    ros::NodeHandle nh;
+
+    nh.param("robot_description", robot_desc_string, std::string());
+
+    if (!kdl_parser::treeFromString(robot_desc_string, robot_tree)){
+      ROS_ERROR("Failed to construct kdl tree");
+      return false;
+    }
+    else
+    {
+        
+    }
 
     // length of limbs
     double l_upper = 1.0;
@@ -52,25 +71,25 @@ int main(int argc, char **argv)
     double resultant_yz     =  sqrt(    pow(y_end, 2.0f) + 
                                         pow(z_end, 2.0f) );
 
+    double theta_xz = atan(x_end / z_end);                                        
+    double theta_yz = atan(y_end / z_end);                                        
+    double theta_yx = atan(y_end / x_end);
 
-    printf("resultant_xyz: %f \n", resultant_xyz);    
-    printf("resultant_xz: %f \n", resultant_xz);    
-    printf("resultant_yz: %f \n", resultant_yz);
+    SHOW(resultant_xyz);
+    SHOW(resultant_xz);
+    SHOW(resultant_yz);
 
+    SHOW(radtodeg(theta_xz));
+    SHOW(radtodeg(theta_yz));
 
     theta_3 = acos((resultant_xyz*resultant_xyz - l_upper*l_upper - l_lower*l_lower)
                             / -(2*l_upper*l_lower)
                             );
 
-    theta_1 = acos(z_end / resultant_yz);
+    theta_2 = (M_PI - theta_3) / 2.0f;
 
-    theta_2 = (M_PI/2.0f - theta_3) / 2.0f;
-
-    printf("theta1_d: %f \n", radtodeg(theta_1));    
-    printf("theta2_d: %f \n", radtodeg(theta_2));    
-    printf("theta3_d: %f \n", radtodeg(theta_3));
-
-    double theta_yx = tan(y_end / x_end);
+    SHOW(radtodeg(theta_2));
+    SHOW(radtodeg(theta_3));
 
     return 0;
 }

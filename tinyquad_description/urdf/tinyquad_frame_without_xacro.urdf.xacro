@@ -1,0 +1,998 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" >
+  <xacro:include filename="$(find tinyquad_description)/urdf/tinyquad_leg.xacro" />
+
+  <xacro:macro name="tinyquad">
+    <link name="base_footprint" >
+      <origin xyz="0.0103120639734149 3.57028601323102E-12 -5.09987831894361E-06" rpy="0 0 0"/>
+    </link>
+    <link
+      name="base_link">
+      <inertial>
+        <origin 
+          xyz="0.0103120639734149 3.57028601323102E-12 -5.09987831894361E-06"
+          rpy="0 0 0" />
+        <mass
+          value="0.673746391598589" />
+        <inertia
+          ixx="0.000240394302807336"
+          ixy="4.72346918508225E-15"
+          ixz="1.34348270128604E-09"
+          iyy="0.00581273765980766"
+          iyz="5.80749294518212E-10"
+          izz="0.00598610621622578" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/base_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/base_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="base_joint" type="fixed" >
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="base_footprint" />
+      <child link="base_link" />
+    </joint>
+    
+    <link
+      name="LFS_L">
+      <inertial>
+        <origin
+          xyz="-0.46748 -0.00092972 6.6559E-07"
+          rpy="0 0 0" />
+        <mass
+          value="0.057684" />
+        <inertia
+          ixx="9.7817E-06"
+          ixy="5.1255E-07"
+          ixz="1.4506E-10"
+          iyy="1.4627E-05"
+          iyz="-7.3251E-10"
+          izz="1.8457E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LFS_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LFS_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="LFS_J"
+      type="revolute">
+      <!-- xyz="0.15711 0.050443 0" -->
+      <origin
+        xyz="0.15711 0.050443 0"
+        rpy="0 0 0" />
+      <parent
+        link="base_link" />
+      <child
+        link="LFS_L" />
+      <axis
+        xyz="1 0 0" />
+      <limit
+        lower="0"
+        upper="1.5708"
+        effort="1.0787315"
+        velocity="7.48" />
+    </joint>
+    <link
+      name="LFU_L">
+      <inertial>
+        <origin
+          xyz="0.00956780740114901 -0.00266058763780398 -0.0619406808382107"
+          rpy="0 0 0" />
+        <mass
+          value="0.0633248586799827" />
+        <inertia
+          ixx="4.22733905580439E-05"
+          ixy="-3.31314885518861E-08"
+          ixz="-4.35470998953999E-06"
+          iyy="3.42993494529219E-05"
+          iyz="4.30780434477683E-06"
+          izz="2.75949415936944E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LFU_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LFU_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint
+      name="LFU_J"
+      type="revolute">
+      <!-- xyz="-0.037107 0 0" -->
+
+      <origin
+        xyz="-0.037107 0 0"
+        rpy="0 0 0" />
+      <parent
+        link="LFS_L" />
+      <child
+        link="LFU_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="0"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+    </joint>
+
+    <link
+      name="LFL_L">
+      <inertial>
+        <origin
+          xyz="-0.0126991843001295 -0.0150723539446907 -0.0467923508835542"
+          rpy="0 0 0" />
+        <mass
+          value="0.0247326277403109" />
+        <inertia
+          ixx="4.21435291889056E-05"
+          ixy="4.52141590599905E-07"
+          ixz="2.40966499667341E-06"
+          iyy="2.82129703259535E-05"
+          iyz="1.66567501013991E-06"
+          izz="2.20436639521685E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LFL_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LFL_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="LFL_J"
+      type="revolute">
+      <origin
+        xyz="0 0 -0.078388"
+        rpy="0 0 0" />
+      <parent
+        link="LFU_L" />
+      <child
+        link="LFL_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-1.8708"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+    </joint>
+    <link
+      name="LFC_L">
+      <inertial>
+        <origin
+          xyz="-0.0137408449020781 -0.0295642372944374 0.0344451912255238"
+          rpy="0 0 0" />
+        <mass
+          value="0.0228920746333247" />
+        <inertia
+          ixx="4.20984399971498E-05"
+          ixy="4.52141590599904E-07"
+          ixz="2.40966499667341E-06"
+          iyy="2.81277626908271E-05"
+          iyz="1.66567501013991E-06"
+          izz="2.19985747604127E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+          <cylinder radius="0.001" length="0.01"/>
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder radius="0.001" length="0.1"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="LFC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="LFL_L" />
+      <child link="LFC_L" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <link
+    name="LFC2_L">
+
+      <inertial>
+        <origin
+          xyz="-0.0137408449020781 -0.0295642372944374 0.0344451912255238"
+          rpy="0 0 0" />
+        <mass
+          value="0.0228920746333247" />
+        <inertia
+          ixx="4.20984399971498E-05"
+          ixy="4.52141590599904E-07"
+          ixz="2.40966499667341E-06"
+          iyy="2.81277626908271E-05"
+          iyz="1.66567501013991E-06"
+          izz="2.19985747604127E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="0 1.5708 0" />
+        <geometry>
+          <cylinder radius="0.001" length="0.01"/>
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <!-- <collision>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder radius="0.001" length="0.1"/>
+        </geometry>
+      </collision> -->
+    </link>
+
+    <joint name="LFC2_J" type="revolute">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="LFC_L" />
+      <child link="LFC2_L" />
+      <axis xyz="1 0 0" />
+    </joint>
+
+    <link
+      name="RFS_L">
+      <inertial>
+        <origin
+          xyz="-0.0467477283228513 0.000929715895879799 -6.65623765903593E-07"
+          rpy="0 0 0" />
+        <mass
+          value="0.0576835055796688" />
+        <inertia
+          ixx="9.78169162854162E-06"
+          ixy="-5.12552767532585E-07"
+          ixz="-1.45029050660471E-10"
+          iyy="1.46267778399584E-05"
+          iyz="-7.32538517650851E-10"
+          izz="1.84573794225176E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RFS_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RFS_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="RFS_J"
+      type="revolute">
+      <origin
+        xyz="0.15711 -0.050443 0"
+        rpy="0 0 0" />
+      <parent
+        link="base_link" />
+      <child
+        link="RFS_L" />
+      <axis
+        xyz="-1 0 0" />
+      <limit
+        lower="0"
+        upper="1.5708"
+        effort="1.0787315"
+        velocity="7.48" />
+    </joint>
+    <link
+      name="RFU_L">
+      <inertial>
+        <origin
+          xyz="0.00956728165308311 0.00266058760025918 -0.0619395881245908"
+          rpy="0 0 0" />
+        <mass
+          value="0.0633248589124594" />
+        <inertia
+          ixx="4.22736181545519E-05"
+          ixy="3.24961756510419E-08"
+          ixz="-4.35489106692463E-06"
+          iyy="3.42993499993469E-05"
+          iyz="-4.30648406795787E-06"
+          izz="2.75947147528143E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 -0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RFU_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 -0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RFU_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="RFU_J"
+      type="revolute">
+      <origin
+        xyz="-0.037107 0 0"
+        rpy="0 0 0" />
+      <parent
+        link="RFS_L" />
+      <child
+        link="RFU_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="0"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="RFL_L">
+      <inertial>
+        <origin
+          xyz="-0.0127020493228516 0.0150724859124731 -0.0467927203950964"
+          rpy="0 0 0" />
+        <mass
+          value="0.0247329300871079" />
+        <inertia
+          ixx="4.21439137772161E-05"
+          ixy="-4.52171756192475E-07"
+          ixz="2.4097951023571E-06"
+          iyy="2.82133292880761E-05"
+          iyz="-1.66560968972201E-06"
+          izz="2.20437476815741E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 -0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RFL_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 -0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RFL_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="RFL_J"
+      type="revolute">
+      <origin
+        xyz="0 0 -0.078391"
+        rpy="0 0 0" />
+      <parent
+        link="RFU_L" />
+      <child
+        link="RFL_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-1.8708"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="RFC_L">
+      <inertial>
+        <origin
+          xyz="-0.01374266106702 0.0295643469613797 0.0344451304198886"
+          rpy="0 0 0" />
+        <mass
+          value="0.0228923769801217" />
+        <inertia
+          ixx="4.20988245854602E-05"
+          ixy="-4.52171756192474E-07"
+          ixz="2.4097951023571E-06"
+          iyy="2.81281216529497E-05"
+          iyz="-1.66560968972201E-06"
+          izz="2.19986584898183E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+          <cylinder radius="0.001" length="0.01"/>
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder radius="0.001" length="0.1"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="RFC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="RFL_L" />
+      <child link="RFC_L" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <link
+      name="LBS_L">
+      <inertial>
+        <origin
+          xyz="-0.0467477273751706 -0.000929715818435276 6.65585065478178E-07"
+          rpy="0 0 0" />
+        <mass
+          value="0.0576835087052566" />
+        <inertia
+          ixx="9.78169184254293E-06"
+          ixy="5.12552426949938E-07"
+          ixz="1.45061250834949E-10"
+          iyy="1.46267788369663E-05"
+          iyz="-7.3251452299274E-10"
+          izz="1.84573804594289E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LBS_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LBS_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="LBS_J"
+      type="revolute">
+      <origin
+        xyz="-0.082893 0.050443 0"
+        rpy="0 0 0" />
+      <parent
+        link="base_link" />
+      <child
+        link="LBS_L" />
+      <axis
+        xyz="1 0 0" />
+      <limit
+        lower="0"
+        upper="1.5708"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="LBU_L">
+      <inertial>
+        <origin
+          xyz="0.00956780741467889 -0.00266058763780398 -0.0619406808045094"
+          rpy="0 0 0" />
+        <mass
+          value="0.0633248585974313" />
+        <inertia
+          ixx="4.22733905380336E-05"
+          ixy="-3.31314945442806E-08"
+          ixz="-4.35470997716578E-06"
+          iyy="3.42993494286409E-05"
+          iyz="4.3078043364392E-06"
+          izz="2.75949415811241E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LBU_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LBU_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="LBU_J"
+      type="revolute">
+      <origin
+        xyz="-0.037107 0 0"
+        rpy="0 0 0" />
+      <parent
+        link="LBS_L" />
+      <child
+        link="LBU_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="0"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="LBL_L">
+      <inertial>
+        <origin
+          xyz="-0.0126991843001295 -0.0150723539446907 -0.0467923508835543"
+          rpy="0 0 0" />
+        <mass
+          value="0.024732627740311" />
+        <inertia
+          ixx="4.21435291889057E-05"
+          ixy="4.52141590599917E-07"
+          ixz="2.40966499667343E-06"
+          iyy="2.82129703259536E-05"
+          iyz="1.66567501013991E-06"
+          izz="2.20436639521686E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LBL_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/LBL_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="LBL_J"
+      type="revolute">
+      <origin
+        xyz="0 0 -0.078388"
+        rpy="0 0 0" />
+      <parent
+        link="LBU_L" />
+      <child
+        link="LBL_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-1.8708"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="LBC_L">
+      <inertial>
+        <origin
+          xyz="-0.0137408449020781 -0.0295642372944374 0.0344451912255238"
+          rpy="0 0 0" />
+        <mass
+          value="0.0228920746333248" />
+        <inertia
+          ixx="4.20984399971499E-05"
+          ixy="4.52141590599917E-07"
+          ixz="2.40966499667343E-06"
+          iyy="2.81277626908272E-05"
+          iyz="1.66567501013991E-06"
+          izz="2.19985747604127E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+          <cylinder radius="0.001" length="0.01"/>
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder radius="0.001" length="0.1"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="LBC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="LBL_L" />
+      <child link="LBC_L" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <link
+      name="RBS_L">
+      <inertial>
+        <origin
+          xyz="-0.0467477283228513 0.000929715895879799 -6.65623765903593E-07"
+          rpy="0 0 0" />
+        <mass
+          value="0.0576835055796688" />
+        <inertia
+          ixx="9.78169162854162E-06"
+          ixy="-5.12552767532585E-07"
+          ixz="-1.45029050660471E-10"
+          iyy="1.46267778399584E-05"
+          iyz="-7.32538517650851E-10"
+          izz="1.84573794225176E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RBS_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RBS_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="RBS_J"
+      type="revolute">
+      <origin
+        xyz="-0.082893 -0.050443 0"
+        rpy="0 0 0" />
+      <parent
+        link="base_link" />
+      <child
+        link="RBS_L" />
+      <axis
+        xyz="-1 0 0" />
+      <limit
+        lower="0"
+        upper="1.5708"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="RBU_L">
+      <inertial>
+        <origin
+          xyz="0.00956728165308314 0.00266058760025913 -0.0619395881245907"
+          rpy="0 0 0" />
+        <mass
+          value="0.0633248589124593" />
+        <inertia
+          ixx="4.22736181545518E-05"
+          ixy="3.2496175651044E-08"
+          ixz="-4.35489106692463E-06"
+          iyy="3.42993499993469E-05"
+          iyz="-4.30648406795788E-06"
+          izz="2.75947147528142E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 -0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RBU_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 -0.01375 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RBU_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="RBU_J"
+      type="revolute">
+      <origin
+        xyz="-0.037107 0 0"
+        rpy="0 0 0" />
+      <parent
+        link="RBS_L" />
+      <child
+        link="RBU_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="0"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="RBL_L">
+      <inertial>
+        <origin
+          xyz="-0.0127020493228516 0.015072485912473 -0.0467927203950962"
+          rpy="0 0 0" />
+        <mass
+          value="0.0247329300871078" />
+        <inertia
+          ixx="4.21439137772162E-05"
+          ixy="-4.52171756192474E-07"
+          ixz="2.40979510235706E-06"
+          iyy="2.82133292880762E-05"
+          iyz="-1.66560968972197E-06"
+          izz="2.20437476815741E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 -0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RBL_L.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 -0.0305 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://tinyquad_description/meshes/RBL_L.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="RBL_J"
+      type="revolute">
+      <origin
+        xyz="0 0 -0.078391"
+        rpy="0 0 0" />
+      <parent
+        link="RBU_L" />
+      <child
+        link="RBL_L" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-1.8708"
+        upper="1.4"
+        effort="1.0787315"
+        velocity="7.48" />
+
+    </joint>
+    <link
+      name="RBC_L">
+      <inertial>
+        <origin
+          xyz="-0.01374266106702 0.0295643469613797 0.0344451304198887"
+          rpy="0 0 0" />
+        <mass
+          value="0.0228923769801216" />
+        <inertia
+          ixx="4.20988245854603E-05"
+          ixy="-4.52171756192474E-07"
+          ixz="2.40979510235706E-06"
+          iyy="2.81281216529498E-05"
+          iyz="-1.66560968972197E-06"
+          izz="2.19986584898183E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+          <cylinder radius="0.001" length="0.01"/>
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0.0425 0"
+          rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder radius="0.001" length="0.1"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="RBC_J" type="revolute">
+      <origin xyz="2.0629E-05 0 -0.085" rpy="0 0 0" />
+      <limit lower="-3.141592" upper="3.141592" effort="1.0787315" velocity="7.48" />
+      <parent link="RBL_L" />
+      <child link="RBC_L" />
+      <axis xyz="0 1 0" />
+    </joint>
+  </xacro:macro>
+  
+</robot>

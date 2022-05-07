@@ -4,7 +4,7 @@
   <arg name="display" default="false" />
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch" >
-    <arg name="paused" value="true"/>
+    <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
 </include>
 
@@ -20,16 +20,16 @@
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" 
   args="-param robot_description 
   -urdf 
-  -model tinyquad
-  -x 0
+  -model tinyquad"
+  output="screen" />
+  <!-- -x 0
   -y 0
   -z 0.4
   -R 0
   -P -1.57
-  -Y 0 "
-  output="screen" />
-
-<!-- <include file="$(find tinyquad_control)/launch/tinyquad_control.launch" /> -->
+  -Y 0 " -->
+  
+  <!-- <include file="$(find tinyquad_control)/launch/tinyquad_control.launch" /> -->
 <!-- <include file="$(find tinyquad_planner)/launch/start.launch" /> -->
   
 </launch>

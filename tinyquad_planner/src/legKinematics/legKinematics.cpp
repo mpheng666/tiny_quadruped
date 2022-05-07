@@ -12,17 +12,9 @@ namespace legKinematics_ns
     bezier_sub(p_nh_.subscribe<geometry_msgs::PointStamped>("bezier_points", 100, &LegKinematics::bezierCb, this)),
     joy_sub(p_nh_.subscribe<sensor_msgs::Joy>("joy", 100, &LegKinematics::joyCb, this)),
     imu_sub(p_nh_.subscribe<sensor_msgs::Imu>("/tinyquad/imu", 100, &LegKinematics::imuCb, this)),
-    joy_joints(4),
+    joy_joints(5),
     tracik_solver(chain_start, chain_end, urdf_param, timeout, eps),
-    fk_solver(chain),
-    LBU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LBU_J_position_controller/command", 1)),
-    LBL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LBL_J_position_controller/command", 1)),
-    RBU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RBU_J_position_controller/command", 1)),
-    RBL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RBL_J_position_controller/command", 1)),
-    LFU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LFU_J_position_controller/command", 1)),
-    LFL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/LFL_J_position_controller/command", 1)),
-    RFU_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RFU_J_position_controller/command", 1)),
-    RFL_J_pub(p_nh_.advertise<std_msgs::Float64>("/tinyquad/RFL_J_position_controller/command", 1))
+    fk_solver(chain)
     {
 
     }
@@ -65,7 +57,7 @@ namespace legKinematics_ns
 
     void LegKinematics::initLegPubs()
     {
-        legPubs = std::vector<ros::Publisher>(4);
+        legPubs = std::vector<ros::Publisher>(5);
 
         for(int i=0; i < legPubs.size(); ++i)
         {
@@ -327,6 +319,7 @@ namespace legKinematics_ns
             joy_joints(1) = msg->axes[1];
             joy_joints(2) = msg->axes[2];
             joy_joints(3) = msg->axes[3];
+            joy_joints(4) = msg->axes[4];
         }
         else if (leg_mode == Mode::wheel_mode)
         {
