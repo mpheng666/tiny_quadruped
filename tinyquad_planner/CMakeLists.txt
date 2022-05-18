@@ -50,3 +50,6 @@ target_link_libraries(body_kinematics_node ${catkin_LIBRARIES} ${orocos_kdl_LIBR
 
 add_executable(kinematics_test_node src/leg_kinematics_test/leg_kinemtics_test.cpp)
 target_link_libraries(kinematics_test_node ${catkin_LIBRARIES})
+
+add_executable(simple_gait_node src/SimpleGait_node.cpp src/gait_generator/SimpleGait.cpp)
+target_link_libraries(simple_gait_node ${catkin_LIBRARIES})

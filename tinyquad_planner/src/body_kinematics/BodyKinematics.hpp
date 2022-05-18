@@ -16,6 +16,12 @@
 
 namespace bodykinematics_ns
 {
+    enum class BodyState{
+        WALKING,
+        TOPPLED,
+        RESTING,
+        SQUATING
+    };
     class BodyKinematics
     {
         public:
@@ -38,6 +44,7 @@ namespace bodykinematics_ns
 
             ros::Subscriber joySub;
 
+            void startLegKinematics();
             std::vector<double> CalculateBodyInverseKinematics(const geometry_msgs::PoseStamped::ConstPtr &bodyCentroid);
             geometry_msgs::PoseStamped CalculateBodyForwardKinematics(const std::vector<double> joints);
 

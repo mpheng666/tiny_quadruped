@@ -151,7 +151,7 @@ namespace legKinematics_ns
         curr_joint_array = nominal;
     }
 
-    auto print_frame_lambda = [](KDL::Frame f)
+    auto print_frame_lambda = [](KDL::Frame& f)
     {
         double x, y, z, roll, pitch, yaw;
         x = f.p.x();
@@ -195,7 +195,7 @@ namespace legKinematics_ns
     {
         KDL::ChainFkSolverPos_recursive fk_solver(chain);
         number_of_joints = chain.getNrOfJoints();
-        ROS_DEBUG("joints number: %d", number_of_joints);
+        // ROS_DEBUG("joints number: %d", number_of_joints);
     }
 
     void LegKinematics::forwardKinematics()
@@ -244,35 +244,35 @@ namespace legKinematics_ns
             {
                 ROS_INFO("wheel mode");
 
-                std_msgs::Float64 LBU_J_msg;
-                std_msgs::Float64 LBL_J_msg;
-                std_msgs::Float64 RBU_J_msg;
-                std_msgs::Float64 RBL_J_msg;
+                // std_msgs::Float64 LBU_J_msg;
+                // std_msgs::Float64 LBL_J_msg;
+                // std_msgs::Float64 RBU_J_msg;
+                // std_msgs::Float64 RBL_J_msg;
 
-                LBU_J_msg.data = 1.4f;
-                LBL_J_msg.data = 0.0f;
-                RBU_J_msg.data = 1.4f;
-                RBL_J_msg.data = 0.0f;
+                // LBU_J_msg.data = 1.4f;
+                // LBL_J_msg.data = 0.0f;
+                // RBU_J_msg.data = 1.4f;
+                // RBL_J_msg.data = 0.0f;
 
-                LBU_J_pub.publish(LBU_J_msg);                
-                LBL_J_pub.publish(LBL_J_msg);                
-                RBU_J_pub.publish(RBU_J_msg);                
-                RBL_J_pub.publish(RBL_J_msg);    
+                // LBU_J_pub.publish(LBU_J_msg);                
+                // LBL_J_pub.publish(LBL_J_msg);                
+                // RBU_J_pub.publish(RBU_J_msg);                
+                // RBL_J_pub.publish(RBL_J_msg);    
 
-                std_msgs::Float64 LFU_J_msg;
-                std_msgs::Float64 LFL_J_msg;
-                std_msgs::Float64 RFU_J_msg;
-                std_msgs::Float64 RFL_J_msg;
+                // std_msgs::Float64 LFU_J_msg;
+                // std_msgs::Float64 LFL_J_msg;
+                // std_msgs::Float64 RFU_J_msg;
+                // std_msgs::Float64 RFL_J_msg;
 
-                LFU_J_msg.data = 1.4f;
-                LFL_J_msg.data = 0.0f;
-                RFU_J_msg.data = 1.4f;
-                RFL_J_msg.data = 0.0f;
+                // LFU_J_msg.data = 1.4f;
+                // LFL_J_msg.data = 0.0f;
+                // RFU_J_msg.data = 1.4f;
+                // RFL_J_msg.data = 0.0f;
 
-                LFU_J_pub.publish(LFU_J_msg);                
-                LFL_J_pub.publish(LFL_J_msg);                
-                RFU_J_pub.publish(RFU_J_msg);                
-                RFL_J_pub.publish(RFL_J_msg);          
+                // LFU_J_pub.publish(LFU_J_msg);                
+                // LFL_J_pub.publish(LFL_J_msg);                
+                // RFU_J_pub.publish(RFU_J_msg);                
+                // RFL_J_pub.publish(RFL_J_msg);          
             }
             break;
 

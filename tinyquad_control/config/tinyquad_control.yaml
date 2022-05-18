@@ -25,54 +25,54 @@ tinyquad:
   LFS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LFS_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   LFU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LFU_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   LFL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LFL_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
 
   RFS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RFS_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   RFU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RFU_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   RFL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RFL_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
 
   LBS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LBS_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   LBU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LBU_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   LBL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: LBL_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
 
   RBS_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RBS_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   RBU_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RBU_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
   RBL_J_position_controller:
     type: effort_controllers/JointPositionController
     joint: RBL_J
-    pid: {p: 110.0, i: 0.01, d: 0.0}
+    pid: {p: 100.0, i: 0.01, d: 0.0}
 
 # # Group Position Controllers ---------------------------------------
 # # Allows to send single ROS msg of Float64MultiArray to all joints

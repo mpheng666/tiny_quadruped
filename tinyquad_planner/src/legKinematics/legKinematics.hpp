@@ -59,7 +59,7 @@ namespace legKinematics_ns
         ros::Publisher RFU_J_pub;
         ros::Publisher RFL_J_pub;
 
-        const double LOOP_RATE {100.0f};
+        const double LOOP_RATE {100.0};
 
         KDL::JntArray joy_joints;
         KDL::Frame foot_contact_frame;
@@ -69,8 +69,8 @@ namespace legKinematics_ns
         int y_mirror;
 
         std::string urdf_param {"/robot_description"};
-        double timeout {0.005f};
-        double eps {1e-5f};
+        double timeout {0.005};
+        double eps {1e-5};
         const std::string chain_start {"base_link"};
         const std::string chain_end {prefix + "C2_L"};
         TRAC_IK::TRAC_IK tracik_solver;
@@ -84,17 +84,17 @@ namespace legKinematics_ns
             prefix + "C2_J"
         };
 
-        const double bias_x_nominal {-0.01f};
-        const double bias_y_nominal {0.00f};
-        const double bias_z_nominal {0.045f};
+        const double bias_x_nominal {0.02};
+        const double bias_y_nominal {0.00};
+        const double bias_z_nominal {0.045};
 
-        const double bias_x {x_mirror * (0.120024f + bias_x_nominal)};
-        const double bias_y {y_mirror * (0.050443f + bias_y_nominal)};
-        const double bias_z {-0.163388f + bias_z_nominal};
+        const double bias_x {x_mirror * (0.120024 + bias_x_nominal)};
+        const double bias_y {y_mirror * (0.050443 + bias_y_nominal)};
+        const double bias_z {-0.163388 + bias_z_nominal};
 
-        const double scale_x {0.1f};
-        const double scale_y {0.1f};
-        const double scale_z {0.05f};
+        const double scale_x {0.1};
+        const double scale_y {0.1};
+        const double scale_z {0.05};
 
         visualization_msgs::Marker target_marker;
         visualization_msgs::Marker target_save_marker;
