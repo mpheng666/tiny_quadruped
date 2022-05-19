@@ -29,18 +29,12 @@ namespace simplegait_ns
             ros::Publisher point_marker_pub_;
             static tf::TransformBroadcaster points_tf;
 
-            geometry_msgs::Point p0;
-            geometry_msgs::Point p1;
-            geometry_msgs::Point p2;
-            geometry_msgs::Point p3;
-            geometry_msgs::Point p4;
-            geometry_msgs::Point p5;
-            geometry_msgs::Point p6;
-
             std::vector<geometry_msgs::Point> target_points_{};
 
             void constructMarker(visualization_msgs::Marker marker, int32_t shape, std::string frame_id, std::string ns, geometry_msgs::Point point, int id, double scale, float colour);
-
+            void generateCircle(geometry_msgs::Point origin, double radius, int plane);
+            void generateRectangle(geometry_msgs::Point origin, double height, double width, int plane);
+            void generateRectangle(std::vector<geometry_msgs::Point> points);
     };
 
 } //simplegait_ns
