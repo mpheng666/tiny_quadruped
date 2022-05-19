@@ -118,16 +118,13 @@ namespace legKinematics_ns
         KDL::JntArray lower_limit_, upper_limit_;
 
         uint number_of_joints_ {5};
-
         KDL::JntArray curr_joint_array_;
 
-        KDL::JntArray ik_result_;
         KDL::ChainFkSolverPos_recursive fk_solver_;
 
         const std::string robot_namespace_ {"tinyquad/"};
 
         geometry_msgs::Twist cmd_vel_msg_;
-
         Colour marker_colour_;
 
         void loadParam();
@@ -136,18 +133,14 @@ namespace legKinematics_ns
         void initMarker(std::string frame_id, std::string ns, int id, int type, double p_x, double p_y, double p_z, double o_x, double o_y, double o_z, double o_w, double scale, float colour[4]);
         void createLeg();
         bool checkKDLChain();
-        std::vector<KDL::JntArray>  getKDLLimits();
+        std::vector<KDL::JntArray> getKDLLimits();
         KDL::JntArray getJointsNominal(const KDL::JntArray& lower_limit, const KDL::JntArray& upper_limit);
-        KDL::JntArray inverseKinematics(KDL::JntArray current_joint, KDL::Frame target_frame);
-        // void initForwardKinematics();
-        double getNumberOfJoints(KDL::Chain& chain);
-        void forwardKinematics();
-        // sensor_msgs::JointState convertJntArraytoJointState(const KDL::JntArray& jntarray);
-
-        void publishJointStates(const KDL::JntArray& jntarray);
-
+        double getNumberOfJoints(const KDL::Chain& chain);
+        KDL::JntArray inverseKinematics(const KDL::JntArray& current_joints, const KDL::Frame& target_frame);
+        KDL::Frame forwardKinematics(const KDL::JntArray& joints, KDL::Frame& target_frame);
+        void publishJointsStates(const KDL::JntArray& jntarray, const uint& n_joint);
+        void publishJointsCommand(const KDL::JntArray& jntarray, const uint& n_joint);
         void updateFSM();
-        // void pathSegmentation();
         void joyCb(const sensor_msgs::Joy::ConstPtr& msg);
         void bezierCb(const geometry_msgs::PointStamped::ConstPtr& msg);
         void imuCb(const sensor_msgs::ImuConstPtr& msg);

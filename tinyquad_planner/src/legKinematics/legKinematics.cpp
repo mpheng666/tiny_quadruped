@@ -6,7 +6,7 @@ namespace legKinematics_ns
     prefix_(prefix),
     x_mirror_(x_mirror),
     y_mirror_(y_mirror),
-    joint_pub_(p_nh_.advertise<sensor_msgs::JointState>("joint_state_s", 1)),
+    joint_pub_(p_nh_.advertise<sensor_msgs::JointState>("joint_states", 1)),
     marker_pub_(p_nh_.advertise<visualization_msgs::Marker>("visualization_target_marker_", 1)),
     cmd_vel_pub_(p_nh_.advertise<geometry_msgs::Twist>("/tinyquad/wheels_controller/cmd_vel", 1)),
     bezier_sub_(p_nh_.subscribe<geometry_msgs::PointStamped>("bezier_points", 100, &LegKinematics::bezierCb, this)),
@@ -25,9 +25,7 @@ namespace legKinematics_ns
     void LegKinematics::start()
     {
         ros::Rate r(LOOP_RATE_);
-        ros::Rate init_r(0.5);
 
-        // init_r.sleep();
         this->loadParam();
         this->initLegPubs();
         this->createLeg();
@@ -39,14 +37,12 @@ namespace legKinematics_ns
             lower_limit_ = this->getKDLLimits().at(0);
             upper_limit_ = this->getKDLLimits().at(1);
             number_of_joints_ = this->getNumberOfJoints(chain_);
-            // this->initForwardKinematics();
             curr_joint_array_ = this->getJointsNominal(lower_limit_, upper_limit_);
         }
 
         while(ros::ok())
         {
             this->updateFSM();
-            joint_pub_.publish(joint_state_);
             ros::spinOnce();
             r.sleep();
         }
@@ -137,7 +133,8 @@ namespace legKinematics_ns
         std::vector<KDL::JntArray> limits;
         KDL::JntArray lower_limit, upper_limit;
         bool valid = tracik_solver_.getKDLLimits(lower_limit, upper_limit);
-        limits.emplace_back(lower_limit, upper_limit);
+        limits.emplace_back(lower_limit);
+        limits.emplace_back(upper_limit);
         if (!valid)
         {
             ROS_ERROR("There was no valid KDL joint limits found");
@@ -157,7 +154,7 @@ namespace legKinematics_ns
         return nominal;
     }
 
-    auto print_frame_lambda = [](KDL::Frame& f)
+    auto print_frame_lambda = [](const KDL::Frame& f)
     {
         double x, y, z, roll, pitch, yaw;
         x = f.p.x();
@@ -174,76 +171,69 @@ namespace legKinematics_ns
                         "\n");
     };
 
-    KDL::JntArray LegKinematics::inverseKinematics(KDL::JntArray current_joint, KDL::Frame target_frame)
-    {
-        std_msgs::Float64 joint_msg;
-        KDL::JntArray ik_result;
-
-        // joint_state_.header.stamp = ros::Time::now();
-        int rc = tracik_solver_.CartToJnt(curr_joint_array_, foot_contact_frame_, ik_result);
-        ROS_INFO("ik result status: %i", rc);
-
-        joint_state_.name.resize(number_of_joints_);
-        joint_state_.position.resize(number_of_joints_);
-
-        marker_pub_.publish(target_marker_);
-        // ROS_DEBUG("Number of joints: %i", number_of_joints_);
-        for (size_t i = 0; i < number_of_joints_; i++)
-        {
-            ROS_INFO("ik_result_ %li  : %f", i, double(ik_result_(i)));
-            joint_state_.name[i] = robot_namespace_ + joint_name_[i];
-            joint_state_.position[i] = curr_joint_array_.data[i] = ik_result(i);
-            joint_msg.data = joint_state_.position[i];
-            legPubs_.at(i).publish(joint_msg);
-        }
-        print_frame_lambda(foot_contact_frame_);
-
-        return ik_result;
-    }
-
-    // void LegKinematics::initForwardKinematics()
-    // {
-    //     KDL::ChainFkSolverPos_recursive fk_solver_(chain_);
-    // }
-
-    double LegKinematics::getNumberOfJoints(KDL::Chain& chain)
+    double LegKinematics::getNumberOfJoints(const KDL::Chain& chain)
     {
         double n = chain.getNrOfJoints();
         return n;
     }
 
-    void LegKinematics::forwardKinematics()
+    KDL::JntArray LegKinematics::inverseKinematics(const KDL::JntArray& current_joints, const KDL::Frame& target_frame)
     {
         std_msgs::Float64 joint_msg;
+        KDL::JntArray ik_result;
 
-        joint_state_.header.stamp = ros::Time::now();
-        fk_solver_.JntToCart(joy_joints_, foot_contact_frame_);
-        joint_state_.name.resize(number_of_joints_);
-        joint_state_.position.resize(number_of_joints_);
+        int rc = tracik_solver_.CartToJnt(current_joints, target_frame, ik_result);
+        ROS_INFO("ik result status: %i", rc);
+  
+        print_frame_lambda(target_frame);
+
+        this->publishJointsStates(ik_result, number_of_joints_);
+        this->publishJointsCommand(ik_result, number_of_joints_);
+
+
         for (size_t i = 0; i < number_of_joints_; i++)
         {
-            joint_state_.name[i] = robot_namespace_ + joint_name_[i];
-            joint_state_.position[i] = joy_joints_(i);
-            joint_msg.data = joint_state_.position[i];
-            legPubs_.at(i).publish(joint_msg);
-        }   
-        print_frame_lambda(foot_contact_frame_);
+            ROS_INFO("ik_result_ %li  : %f", i, double(ik_result(i)));
+        }
+
+        return ik_result;
     }
 
-    void LegKinematics::publishJointStates(const KDL::JntArray& jntarray)
+    KDL::Frame LegKinematics::forwardKinematics(const KDL::JntArray& joints, KDL::Frame& target_frame)
     {
-        sensor_msgs::JointState joint_state;
-        joint_state.header.stamp = ros::Time::now();
-        joint_state.name.resize(number_of_joints_);
-        joint_state.position.resize(number_of_joints_);
-
         std_msgs::Float64 joint_msg;
 
-        for (size_t i = 0; i < number_of_joints_; i++)
+        fk_solver_.JntToCart(joints, target_frame);
+        print_frame_lambda(foot_contact_frame_);
+
+        this->publishJointsStates(joints, number_of_joints_);
+        this->publishJointsCommand(joints, number_of_joints_);
+
+        return target_frame;
+    }
+
+    void LegKinematics::publishJointsStates(const KDL::JntArray& jntarray, const uint& n_joint)
+    {
+        sensor_msgs::JointState joint_state;
+
+        joint_state.header.stamp = ros::Time::now();
+        joint_state.name.resize(n_joint);
+        joint_state.position.resize(n_joint);
+
+        for (size_t i = 0; i < n_joint; i++)
         {
             joint_state.name[i] = robot_namespace_ + joint_name_[i];
-            joint_state.position[i] = curr_joint_array_.data[i] = jntarray(i);
+            joint_state.position[i] = jntarray(i);
+        }
+        joint_pub_.publish(joint_state);
+    }
 
+    void LegKinematics::publishJointsCommand(const KDL::JntArray& jntarray, const uint& n_joint)
+    {
+        std_msgs::Float64 joint_msg;
+
+        for (size_t i = 0; i < n_joint; i++)
+        {
             joint_msg.data = jntarray(i);
             legPubs_.at(i).publish(joint_msg);
         }
@@ -256,14 +246,14 @@ namespace legKinematics_ns
         case Mode::cartesian_mode:
             {
                 // ROS_DEBUG("IK mode");
-                inverseKinematics();
+                curr_joint_array_ = this->inverseKinematics(curr_joint_array_, foot_contact_frame_);
                 break;
             }
 
         case Mode::joint_mode:
             {
                 // ROS_DEBUG("FK mode");
-                forwardKinematics();
+                this->forwardKinematics(joy_joints_, foot_contact_frame_);
                 break;
             }
 
@@ -338,13 +328,14 @@ namespace legKinematics_ns
  
         if (leg_mode_ == Mode::cartesian_mode)
         {
+            target_marker_.header.stamp = ros::Time::now();
             target_marker_.pose.position.x = msg->axes[0] * scale_x_ + bias_x_;
             target_marker_.pose.position.y = msg->axes[3] * scale_y_ + bias_y_;
             target_marker_.pose.position.z = msg->axes[1] * scale_z_ + bias_z_;
             foot_contact_frame_.p.x(target_marker_.pose.position.x);
             foot_contact_frame_.p.y(target_marker_.pose.position.y);
             foot_contact_frame_.p.z(target_marker_.pose.position.z);
-            target_marker_.header.stamp = ros::Time::now();
+            marker_pub_.publish(target_marker_);
         }
         else if (leg_mode_ == Mode::joint_mode)
         {
