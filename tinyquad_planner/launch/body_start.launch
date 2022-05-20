@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+    <rosparam file="$(find tinyquad_planner)/config/body_params.yaml" command="load"/>
 
     <node name="body_kinematics_node" pkg="tinyquad_planner" type="body_kinematics_node" output="screen"/>
     

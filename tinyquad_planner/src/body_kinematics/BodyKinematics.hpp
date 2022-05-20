@@ -47,7 +47,10 @@ namespace bodykinematics_ns
             const double SCALE_PITCH_ {0.35};
             const double SCALE_YAW_   {0.35};
 
+            geometry_msgs::Pose defaultPose_;
+            std_msgs::ColorRGBA defaultColour_;
 
+            std::vector<geometry_msgs::Point> bodyCorners_;
             geometry_msgs::PoseStamped bodyCentroid_;
             std::vector<double> joints_;
 
@@ -62,20 +65,29 @@ namespace bodykinematics_ns
 
             geometry_msgs::Pose marker_pose_;
 
-
+            // kinematics function
             void StartLegKinematics();
-            visualization_msgs::Marker CreateMarker(std::string frame_id, std::string ns, int id, int type=8, double p_x=0.0, double p_y=0.0, double p_z=0.0, double o_x=0.0, double o_y=0.0, double o_z=0.0, double o_w=1.0, double scale=0.025, float r=1.0f, float g=0.0f, float b=0.0f, float a=1.0f);
-            void PublishMarker(const visualization_msgs::Marker& marker);
             std::vector<geometry_msgs::Pose> CalculateBodyInverseKinematics(const geometry_msgs::Pose& bodyCentroid);
             geometry_msgs::PoseStamped CalculateBodyForwardKinematics(const std::vector<geometry_msgs::Pose>& legs_pose);
-            void ModifyMarker(visualization_msgs::Marker& marker, geometry_msgs::Pose pose);
-            void JoyCb(const sensor_msgs::Joy::ConstPtr &msg);
 
-            // helper function
+            // math helper function
             std::vector<double> ConvertQuaternionToEuler(const geometry_msgs::Quaternion& q);
-            geometry_msgs::Quaternion ConvertEulerToQuaternion(const double& roll, const double& pitch, const double& yaw);
+            geometry_msgs::Quaternion ConvertEulerToQuaternion(const double roll, const double pitch, const double yaw);
 
-    };
+            // visualise function
+            visualization_msgs::Marker CreateMarker(std::string frame_id, std::string ns, int id, int type=8, double p_x=0.0, double p_y=0.0, double p_z=0.0, double o_x=0.0, double o_y=0.0, double o_z=0.0, double o_w=1.0, double scale=0.1, float r=1.0f, float g=0.0f, float b=0.0f, float a=1.0f);
+            visualization_msgs::Marker CreateMarker(std::string frame_id, std::string ns, int id, int type, geometry_msgs::Pose& pose, double scale, std_msgs::ColorRGBA& colour);
+            void PublishMarker(const visualization_msgs::Marker& marker);
+            void PublishMarker(const std::vector<visualization_msgs::Marker>& markers);
+            void ModifyMarker(visualization_msgs::Marker& marker, geometry_msgs::Pose pose);
+            std::vector<visualization_msgs::Marker> DrawRecangle(std::vector<geometry_msgs::Point>& points);
+            // void DrawRecangle(const double length, const double width);
+
+            // ROS function
+            void LoadParam();
+            void DefineDefaultVariables();
+            void JoyCb(const sensor_msgs::Joy::ConstPtr &msg);
+        };
 
 } //bodykinematics_ns
 
