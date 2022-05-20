@@ -90,9 +90,9 @@ void BodyKinematics::JoyCb(const sensor_msgs::Joy::ConstPtr &msg)
     // hold button to move centroid
     if(msg->buttons[6] == 1)
     {
-        double x = msg->axes[0] * scale_x_;
-        double y = msg->axes[1] * scale_y_;
-        double z = msg->axes[3] * scale_z_;
+        double x = msg->axes[0] * SCALE_X_;
+        double y = msg->axes[1] * SCALE_Y_;
+        double z = msg->axes[3] * SCALE_Z_;
         marker_pose_.position.x = x;
         marker_pose_.position.y = y;
         marker_pose_.position.z = z;
@@ -100,9 +100,9 @@ void BodyKinematics::JoyCb(const sensor_msgs::Joy::ConstPtr &msg)
     // move RPY
     else
     {
-        double roll = msg->axes[0] * scale_roll_;
-        double pitch = msg->axes[1] * scale_pitch_;
-        double yaw = msg->axes[2] * scale_yaw_;
+        double roll = msg->axes[0] *    SCALE_ROLL_;
+        double pitch = msg->axes[1] *   SCALE_PITCH_;
+        double yaw = msg->axes[2] *     SCALE_YAW_;
         marker_pose_.orientation = (this->ConvertEulerToQuaternion(roll, pitch, yaw));
     }
 }

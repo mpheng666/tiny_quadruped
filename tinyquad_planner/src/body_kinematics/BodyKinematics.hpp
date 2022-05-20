@@ -38,14 +38,14 @@ namespace bodykinematics_ns
             ros::Rate rate_;
             
             // for joy control
-            const double scale_x_ {0.1};
-            const double scale_y_ {0.1};
-            const double scale_z_ {0.1};
+            const double SCALE_X_ {0.1};
+            const double SCALE_Y_ {0.1};
+            const double SCALE_Z_ {0.1};
 
             // for RPY controll (1 rad = 57 deg, 20 deg = 0.35 rad)
-            const double scale_roll_  {0.35};
-            const double scale_pitch_ {0.35};
-            const double scale_yaw_   {0.35};
+            const double SCALE_ROLL_  {0.35};
+            const double SCALE_PITCH_ {0.35};
+            const double SCALE_YAW_   {0.35};
 
 
             geometry_msgs::PoseStamped bodyCentroid_;
