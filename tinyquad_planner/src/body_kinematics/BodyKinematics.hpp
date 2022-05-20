@@ -47,24 +47,28 @@ namespace bodykinematics_ns
             const double scale_pitch_ {0.35};
             const double scale_yaw_   {0.35};
 
+
             geometry_msgs::PoseStamped bodyCentroid_;
             std::vector<double> joints_;
 
             ros::Publisher jointGroupCommandPub_;
             ros::Publisher bodyCentroidPub_;
-
             ros::Publisher targetBodyCentroidPub_;
-
-            std::vector<ros::Publisher> jointCommandPub_;
+            ros::Publisher markerPub_;
 
             ros::Subscriber joySub_;
 
-            void StartLegKinematics();
-            visualization_msgs::Marker CreateMarker(std::string frame_id, std::string ns, int id, int type, double p_x, double p_y, double p_z, double o_x, double o_y, double o_z, double o_w, double scale, float colour[4]);
-            void PublishMarker(const visualization_msgs::Marker& marker);
-            std::vector<geometry_msgs::Pose> CalculateBodyInverseKinematics(const geometry_msgs::PoseStamped& bodyCentroid);
-            geometry_msgs::PoseStamped CalculateBodyForwardKinematics(const std::vector<geometry_msgs::Pose>& legs_pose);
+            std::vector<ros::Publisher> jointCommandPub_;
 
+            geometry_msgs::Pose marker_pose_;
+
+
+            void StartLegKinematics();
+            visualization_msgs::Marker CreateMarker(std::string frame_id, std::string ns, int id, int type=8, double p_x=0.0, double p_y=0.0, double p_z=0.0, double o_x=0.0, double o_y=0.0, double o_z=0.0, double o_w=1.0, double scale=0.025, float r=1.0f, float g=0.0f, float b=0.0f, float a=1.0f);
+            void PublishMarker(const visualization_msgs::Marker& marker);
+            std::vector<geometry_msgs::Pose> CalculateBodyInverseKinematics(const geometry_msgs::Pose& bodyCentroid);
+            geometry_msgs::PoseStamped CalculateBodyForwardKinematics(const std::vector<geometry_msgs::Pose>& legs_pose);
+            void ModifyMarker(visualization_msgs::Marker& marker, geometry_msgs::Pose pose);
             void JoyCb(const sensor_msgs::Joy::ConstPtr &msg);
 
             // helper function
