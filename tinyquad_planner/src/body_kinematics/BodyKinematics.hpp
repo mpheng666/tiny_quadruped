@@ -25,6 +25,11 @@ namespace bodykinematics_ns
         SQUATING
     };
 
+    // struct bodyRectangle{
+    //     double length;
+    //     double width;
+    // };
+    
     class BodyKinematics
     {
         public:
@@ -38,19 +43,23 @@ namespace bodykinematics_ns
             ros::Rate rate_;
             
             // for joy control
-            const double SCALE_X_ {0.1};
-            const double SCALE_Y_ {0.1};
-            const double SCALE_Z_ {0.1};
+            const double SCALE_X_ {0.2};
+            const double SCALE_Y_ {0.2};
+            const double SCALE_Z_ {0.2};
 
             // for RPY controll (1 rad = 57 deg, 20 deg = 0.35 rad)
-            const double SCALE_ROLL_  {0.35};
-            const double SCALE_PITCH_ {0.35};
-            const double SCALE_YAW_   {0.35};
+            const double SCALE_ROLL_  {10.0};
+            const double SCALE_PITCH_ {10.0};
+            const double SCALE_YAW_   {10.0};
 
             geometry_msgs::Pose defaultPose_;
             std_msgs::ColorRGBA defaultColour_;
 
+            bool usePoints_;
             std::vector<geometry_msgs::Point> bodyCorners_;
+            // bodyRectangle bodyRec_;
+            double bodyLength_;
+            double bodyWidth_;
             geometry_msgs::PoseStamped bodyCentroid_;
             std::vector<double> joints_;
 
@@ -63,23 +72,25 @@ namespace bodykinematics_ns
 
             std::vector<ros::Publisher> jointCommandPub_;
 
-            geometry_msgs::Pose marker_pose_;
+            geometry_msgs::Pose markerPose_;
+            geometry_msgs::Pose markerPosePrevious_;
 
             // kinematics function
             void StartLegKinematics();
-            std::vector<geometry_msgs::Pose> CalculateBodyInverseKinematics(const geometry_msgs::Pose& bodyCentroid);
+            std::vector<geometry_msgs::Point> CalculateBodyInverseKinematics(const geometry_msgs::Pose& center_target, std::vector<geometry_msgs::Point>& points);
             geometry_msgs::PoseStamped CalculateBodyForwardKinematics(const std::vector<geometry_msgs::Pose>& legs_pose);
 
             // math helper function
             std::vector<double> ConvertQuaternionToEuler(const geometry_msgs::Quaternion& q);
             geometry_msgs::Quaternion ConvertEulerToQuaternion(const double roll, const double pitch, const double yaw);
+            std::vector<geometry_msgs::Point> FindPointsFromSize(std::vector<double>& size);
+            std::vector<double> FindSizeFromPoints(std::vector<geometry_msgs::Point>& points);
 
             // visualise function
-            visualization_msgs::Marker CreateMarker(std::string frame_id, std::string ns, int id, int type=8, double p_x=0.0, double p_y=0.0, double p_z=0.0, double o_x=0.0, double o_y=0.0, double o_z=0.0, double o_w=1.0, double scale=0.1, float r=1.0f, float g=0.0f, float b=0.0f, float a=1.0f);
             visualization_msgs::Marker CreateMarker(std::string frame_id, std::string ns, int id, int type, geometry_msgs::Pose& pose, double scale, std_msgs::ColorRGBA& colour);
             void PublishMarker(const visualization_msgs::Marker& marker);
             void PublishMarker(const std::vector<visualization_msgs::Marker>& markers);
-            void ModifyMarker(visualization_msgs::Marker& marker, geometry_msgs::Pose pose);
+            void UpdateMarker(visualization_msgs::Marker& marker, geometry_msgs::Pose pose);
             std::vector<visualization_msgs::Marker> DrawRecangle(std::vector<geometry_msgs::Point>& points);
             // void DrawRecangle(const double length, const double width);
 
