@@ -23,6 +23,7 @@ void BodyKinematics::DefineDefaultVariables()
     defaultColour_.g = 1.0;
     defaultColour_.a = 1.0;
     bodyCentroid_.pose.orientation = defaultPose_.orientation;
+    bodyCornersInitial_ = bodyCorners_;
 }
 
 void BodyKinematics::LoadParam()
@@ -56,8 +57,8 @@ void BodyKinematics::LoadParam()
 
 void BodyKinematics::Start()
 {
-    this->DefineDefaultVariables();
     this->LoadParam();
+    this->DefineDefaultVariables();
     auto markers_rectangle = this->DrawRecangle(bodyCorners_);
     auto target_marker = this->CreateMarker("TQ_frame", "tinyquad", 10, visualization_msgs::Marker::ARROW, defaultPose_, 1, defaultColour_);
     
@@ -181,25 +182,18 @@ std::vector<geometry_msgs::Point> BodyKinematics::CalculateBodyInverseKinematics
     // ROS_INFO_STREAM("debug angle: " << angle_debug);
 
     // YAW XY
-    // double diagonal = sqrt(pow(bodyLength_/2.0, 2) + pow(bodyWidth_/2.0, 2));
-    // double theta = atan((bodyLength_/2.0)/(bodyWidth_/2.0));
-    // // double delta_x_yaw = (bodyLength_/2.0) - diagonal*sin(M_PI/2.0 - (theta + rpy[2]));
-    // // double delta_y_yaw = diagonal*cos(M_PI/2.0 - (theta + rpy[2]));
-    // // double delta_x_yaw = -(bodyLength_/2.0 * cos(rpy[2]));
-    // // double delta_y_yaw = -(bodyLength_/2.0 * sin(rpy[2]));
-    // // ROS_INFO_STREAM("debug delta x: " << delta_x_yaw);
-    // // ROS_INFO_STREAM("debug delta y: " << delta_y_yaw);
-    // points.at(0).x = points.at(0).x * cos(rpy[2]) + points.at(0).y * sin(rpy[2]);
-    // points.at(0).y = points.at(0).y * cos(rpy[2]) - points.at(0).x * sin(rpy[2]);
-    // points.at(1).x = points.at(1).x * cos(rpy[2]) + points.at(1).y * sin(rpy[2]);
-    // points.at(1).y = points.at(1).y * cos(rpy[2]) - points.at(1).x * sin(rpy[2]);
-    // points.at(2).x = points.at(2).x * cos(rpy[2]) + points.at(2).y * sin(rpy[2]);
-    // points.at(2).y = points.at(2).y * cos(rpy[2]) - points.at(2).x * sin(rpy[2]);    
-    // points.at(3).x = points.at(3).x * cos(rpy[2]) + points.at(3).y * sin(rpy[2]);
-    // points.at(3).y = points.at(3).y * cos(rpy[2]) - points.at(3).x * sin(rpy[2]);
+    // ROS_INFO("YAW: %f \n", rpy[2]);
+    points.at(0).x = bodyCornersInitial_.at(0).x * cos(-rpy[2]) + bodyCornersInitial_.at(0).y * sin(-rpy[2]);
+    points.at(0).y = bodyCornersInitial_.at(0).y * cos(-rpy[2]) - bodyCornersInitial_.at(0).x * sin(-rpy[2]);
+    points.at(1).x = bodyCornersInitial_.at(1).x * cos(-rpy[2]) + bodyCornersInitial_.at(1).y * sin(-rpy[2]);
+    points.at(1).y = bodyCornersInitial_.at(1).y * cos(-rpy[2]) - bodyCornersInitial_.at(1).x * sin(-rpy[2]);
+    points.at(2).x = bodyCornersInitial_.at(2).x * cos(-rpy[2]) + bodyCornersInitial_.at(2).y * sin(-rpy[2]);
+    points.at(2).y = bodyCornersInitial_.at(2).y * cos(-rpy[2]) - bodyCornersInitial_.at(2).x * sin(-rpy[2]);
+    points.at(3).x = bodyCornersInitial_.at(3).x * cos(-rpy[2]) + bodyCornersInitial_.at(3).y * sin(-rpy[2]);
+    points.at(3).y = bodyCornersInitial_.at(3).y * cos(-rpy[2]) - bodyCornersInitial_.at(3).x * sin(-rpy[2]);
+    // ROS_INFO("x[0]: %f \n", points.at(0).x);
+    // ROS_INFO("y[0]: %f \n", points.at(0).y);
 
-
-    
     markerPosePrevious_ = markerPose_;
 
     return points;

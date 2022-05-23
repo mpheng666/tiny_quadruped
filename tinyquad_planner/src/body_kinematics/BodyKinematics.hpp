@@ -48,15 +48,16 @@ namespace bodykinematics_ns
             const double SCALE_Z_ {0.2};
 
             // for RPY controll (1 rad = 57 deg, 20 deg = 0.35 rad)
-            const double SCALE_ROLL_  {10.0};
-            const double SCALE_PITCH_ {10.0};
-            const double SCALE_YAW_   {10.0};
+            const double SCALE_ROLL_  {1.0};
+            const double SCALE_PITCH_ {1.0};
+            const double SCALE_YAW_   {1.0};
 
             geometry_msgs::Pose defaultPose_;
             std_msgs::ColorRGBA defaultColour_;
 
             bool usePoints_;
             std::vector<geometry_msgs::Point> bodyCorners_;
+            std::vector<geometry_msgs::Point> bodyCornersInitial_;
             // bodyRectangle bodyRec_;
             double bodyLength_;
             double bodyWidth_;
