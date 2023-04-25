@@ -9,9 +9,9 @@ windows:
       layout: tiled
       panes:
         - sleep 1; roscore
-        - sleep 2; roslaunch tinyquad_description gazebo_with_control.launch
+        - sleep 2; roslaunch tinyquad_description gazebo.launch
         - sleep 3 ; roslaunch tinyquad_planner visualize.launch
   - control:
       panes:
         - sleep 5 ; roslaunch tinyquad_control tinyquad_control.launch
-        - roslaunch tinyquad_planner start.launch
+        - sleep 5; roslaunch tinyquad_planner start.launch
