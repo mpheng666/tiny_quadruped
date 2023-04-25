@@ -1,1 +1,2 @@
-# tinyquad_ws
+# tiny_quadruped
+
